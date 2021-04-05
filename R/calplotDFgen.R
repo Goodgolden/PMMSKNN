@@ -11,23 +11,18 @@
 #' @return A data frame used to generate calibration plots (using \code{"ggplot"}) for training and testing data.
 #' 
 #' @export
-calplotDFgen <- function(observed,
-                         predicted,
-                         n = 10
-                         ) {
+calplotDFgen <- 
+  function(observed,
+           predicted,
+           n = 10) {
 
     # AGGREGATED DATAFRAME
     df <- bind_cols(observed = observed,
-                             predicted = predicted) %>%
-                    bind_cols(
-                              dec = predicted %>% ntile(., 10)
-                              ) %>%
-                    left_join(
-                              bind_cols(observed = observed,
-                                        predicted = predicted) %>%
-                              bind_cols(
-                                        dec = predicted %>% ntile(., 10)
-                              ) %>%
+                    predicted = predicted) %>%
+      bind_cols(dec = predicted %>% ntile(., 10)) %>%
+      left_join(bind_cols(observed = observed,
+                          predicted = predicted) %>%
+                  bind_cols(dec = predicted %>% ntile(., 10)) %>%
                               group_by(.data$dec) %>%
                               summarise(avg_val =  mean(.data$predicted)),
                           by = "dec"

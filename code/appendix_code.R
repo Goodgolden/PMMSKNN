@@ -7,7 +7,7 @@
 # - - - - - - - - - - - - - - - - - - -
 
 
-rm(list=ls())
+rm(list = ls())
 library(gamlss)
 library(brokenstick)
 library(dplyr)
@@ -18,7 +18,9 @@ setwd("/srv/shiny-server/prc")
 ## Step 2: Read Data ###
 
 ## Updated data by Dr. Kittelson 3.16.2018
-library(data.table) # for faster csv reading (not that significantly different in read speed but still)
+library(data.table) 
+# for faster csv reading 
+# (not that significantly different in read speed but still)
 df <- fread("flexdata_031618.csv")
 
 ## Step 3: Clean data ###

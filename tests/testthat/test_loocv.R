@@ -35,23 +35,32 @@ full <- ChickWeight %>%
   # Set Time == 0 observations as baseline = 1; 0 otherwise
   mutate(
     baseline = ifelse(Time == 0, 1, 0),
-    Chick = as.numeric(as.character(Chick))
-    ) 
+    Chick = as.numeric(as.character(Chick))) 
 
 test_proc <- preproc(
-                dff=full,                 # specify full dataset name
-                split_var = 'train_test', # train test split variable
-                trainval = 1,             # training set value
-                testval = 2,              # test set value
-                knots_exp = c(0, 7, 14, 21), # Specify broken stick knots
-                out_time = 21,            # specify which timepoint to use 
-                outcome = "weight",          # specify outcome variable name
-                time_var = "Time",        # specify time variable name
-                pat_id = "Chick",    # specify patient id variable name
+                dff=full,                 
+                # specify full dataset name
+                split_var = 'train_test', 
+                # train test split variable
+                trainval = 1,             
+                # training set value
+                testval = 2,              
+                # test set value
+                knots_exp = c(0, 7, 14, 21), 
+                # Specify broken stick knots
+                out_time = 21,            
+                # specify which timepoint to use 
+                outcome = "weight",          
+                # specify outcome variable name
+                time_var = "Time",        
+                # specify time variable name
+                pat_id = "Chick",    
+                # specify patient id variable name
                 baseline_var = "baseline",
                 m = 20,
-                varlist = c("b_weight") # specify list of covariates for pmm
-)
+                varlist = c("b_weight"))
+                # specify list of covariates for pmm
+
 
 ## loocv_function() {{{
 fin <- loocv_function(

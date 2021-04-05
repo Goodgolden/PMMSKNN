@@ -3,20 +3,20 @@ output: rmarkdown::github_document
 ---
 
 ```{r echo=FALSE}
-knitr::opts_chunk$set(collapse=TRUE, comment="##", fig.retina=2, fig.path = "README_figs/README-")
+knitr::opts_chunk$set(collapse = TRUE, 
+                      comment = "##", 
+                      fig.retina = 2, 
+                      fig.path = "README_figs/README-")
 ```
-
-<!-- badges: start -->
-  [![Travis build status](https://travis-ci.com/ck2136/PMMSKNN.svg?branch=master)](https://travis-ci.com/ck2136/PMMSKNN)
-<!-- badges: end -->
-
 
 # Predictive Mean Matched Sequential K-Nearest Neighbor 
 
 ## Introduction
 
-The purpose of the this repository is to provide a method for determining the trajectory of any longitudinal outcomes based on obtaining predictions using a extension of a nearest neighbors algorithm described by Dr. Alemi (a.k.a. [sequential k-nearest neighbor](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2911789/) (SKNN)). We extend the SKNN approach by matching similar patients using the [predictive mean matching](https://amstat.tandfonline.com/doi/abs/10.1080/07350015.1988.10509663). We illustrate the use the `PMMSKNN` pacakge below briefly using 
-the `ChickWeight` data.
+The purpose of the this repository is to provide a method for determining the trajectory of any longitudinal outcomes based on obtaining predictions using a extension of a nearest neighbors algorithm described by Dr. Alemi 
+(a.k.a. [sequential k-nearest neighbor](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2911789/) (SKNN)). 
+We extend the SKNN approach by matching similar patients using the [predictive mean matching](https://amstat.tandfonline.com/doi/abs/10.1080/07350015.1988.10509663). 
+We illustrate the use the `PMMSKNN` pacakge below briefly using the `ChickWeight` data.
 
 
 ## Data
@@ -25,7 +25,11 @@ The following illustration uses the `ChickWeight` data that exists within `base 
 
 ## Algorithms Employed 
 
-The main prediction method is using the `R` package [brokenstick](https://github.com/stefvanbuuren/brokenstick), along with [predictive mean matching](https://books.google.com/books?hl=en&lr=&id=rM8eSRUYYHYC&oi=fnd&pg=PA442&dq=%22predictive+mean+matching%22++rubin&ots=OM-74mXZoX&sig=H-tIcTl7xqIfbgumXuHBktBTfkQ#v=onepage&q=%22predictive%20mean%20matching%22%20%20rubin&f=false) and [gamlss](https://www.gamlss.com/). Currently the code is under development to work within the [caret](https://github.com/topepo/caret) and [mlr](https://github.com/mlr-org/mlr) packages. 
+The main prediction method is using the `R` package [brokenstick](https://github.com/stefvanbuuren/brokenstick), 
+along with [predictive mean matching](https://books.google.com/books?hl=en&lr=&id=rM8eSRUYYHYC&oi=fnd&pg=PA442&dq=%22predictive+mean+matching%22++rubin&ots=OM-74mXZoX&sig=H-tIcTl7xqIfbgumXuHBktBTfkQ#v=onepage&q=%22predictive%20mean%20matching%22%20%20rubin&f=false) and 
+[gamlss](https://www.gamlss.com/). 
+Currently the code is under development to work within the [caret](https://github.com/topepo/caret) and 
+[mlr](https://github.com/mlr-org/mlr) packages. 
 
 ## Installation/Compilation Tip
 
@@ -40,7 +44,8 @@ git clone https://github.com/ck2136/PMMSKNN.git
 R CMD Install PMMSKNN
 ```
 
-- There will be dependencies that should be resolved if installation isn't done through the standard R method (in R):
+- There will be dependencies that should be resolved 
+if installation isn't done through the standard R method (in R):
 ```
 devtools::install_github("stefvanbuuren/brokenstick")
 devtools::install_deps('.')
@@ -50,57 +55,69 @@ devtools::install_local('.')
 ## Example workflow
 
 ### Load Libraries and the `ChickWeight` data
-```{r loadlibs}
+```{r package}
 library("pacman")
 p_load(PMMSKNN, dplyr, here)
-data("ChickWeight") ## example tug data
-
+data("ChickWeight") 
+## example tug data
 ```
 
 ### Wrangle ChickWeight data
 ```{r wrangledata}
 # load only the TUG dataset
-full  <- ChickWeight %>%
-  rename(
-    patient_id = 3,
-    time = 2
-  )
+full_0  <- ChickWeight %>%
+  rename(patient_id = 3,
+         time = 2)
 
 # Train and Test split for all weight outcome: create 
 set.seed(1234)
-full <- PMMSKNN:::baselinemk(full, "patient_id", "time")
-
-# Select 10 first patients as the test case
-full %<>%
+full <- 
+  PMMSKNN:::baselinemk(full_0, "patient_id", "time") %>%
+  ## filter 10 patients as test with baselinemk()
   mutate(
     patient_id = as.numeric(as.character(patient_id)),
-    train_test = ifelse(patient_id %in% c(1,2,20, 30, 40), 2, 1),
-    Diet = as.numeric(as.character(Diet))
-  ) %>% 
-  # Need to have distinct patient id's for the full data
-  distinct(patient_id, time, .keep_all=TRUE)
+    train_test = ifelse(patient_id %in% c(1, 2, 20, 30, 40), 2, 1),
+    Diet = as.numeric(as.character(Diet))) %>% 
+  ## add distinct patient id's for the full data
+  distinct(patient_id, time, .keep_all = TRUE)
   
-# Check the structure of the dataset
-full %>% str
-
+## Check the structure of the dataset
+# View(full)
+attributes(full)$names
+attributes(full)$class
 ```
 
-### preproc() creates matched test/train based on Predictive Mean Matching (PMM)
+### PMMSKNN:::preproc() 
+creates matched test/train based on Predictive Mean Matching (PMM)
 ```{r preprocfunc}
-test_proc <- preproc(
-                dff=full,                 # specify full dataset name
-                split_var = 'train_test', # train test split variable
-                trainval = 1,             # training set value
-                testval = 2,              # test set value
-                knots_exp = c(0, 4, 8, 16), # Specify broken stick knots
-                out_time = 16,            # specify which timepoint to use 
-                outcome = "weight",          # specify outcome variable name
-                time_var = "time",        # specify time variable name
-                pat_id = "patient_id",    # specify patient id variable name
-                varlist = c("Diet") # specify list of covariates for pmm
-                #filter_exp = "Time > 2"   # Filter observations that will be included
-)
-test_proc %>% str(max.level=1)
+test_proc <-
+  preproc(
+    ## specify full dataset name
+    dff = full,
+    ## train test split variable
+    split_var = "train_test",
+    ## training set value as 1
+    trainval = 1,
+    ## test set value as 2
+    testval = 2,
+    ## brokenstick knots
+    knots_exp = c(0, 4, 8, 16),
+    ## specify timepoint to use
+    out_time = 16,
+    ## specify outcome variable name
+    outcome = "weight",
+    ## specify time variable name
+    time_var = "time",
+    ## specify patient id variable name
+    pat_id = "patient_id",
+    ## Filter observations that will be included
+    # filter_exp = "Time > 2",
+    ## specify list of covariates for pmm
+    varlist = c("Diet"))
+
+use_r("preproc")
+test_proc %>% 
+  str(max.level=1)
 ```
 
 - Depending on the `knots_exp` specified and the `out_time` time chosen, there will likely be warnings about parameter estimation within the `brokenstick()` algorithm. Here is where the researcher needs to consider the appropriate values for the variable in terms of clinical relevance and the data at hand.

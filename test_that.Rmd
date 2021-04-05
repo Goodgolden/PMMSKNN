@@ -1,0 +1,48 @@
+---
+title: "test_that"
+author: "Randy"
+date: "4/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      error = recover)
+```
+
+
+```{r}
+library(testthat)
+library(devtools)
+# library(PMMSKNN)
+```
+
+```{r error = recove}
+# devtools::install_github('ck2136/PMMSKNN')
+devtools::load_all()
+test_check("PMMSKNN")
+
+debug(PMMSKNN::preproc)
+
+use_r("calplotDFgen.R")
+use_test("calplotDFgen.R")
+use_test("baselinemk")
+
+
+View(full)
+rep = "time"
+rrep = "Diet"
+
+filter_string <- paste0(rep, "==0")
+full %>%
+  select(matches(c(rep, rrep)))
+  
+  
+  
+  
+  
+  filter(!! rlang::parse_expr(filter_string))
+rlang::last_error()
+rlang::last_trace()
+```
+

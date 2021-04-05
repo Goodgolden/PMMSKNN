@@ -1,29 +1,25 @@
-# - - - - - - - - - - - - - - - - - - - - #
+## title ---------------------------------------------
+# Mon Apr 05 10:16:31 2021 ------------------------------
 # File:             analysis.R
-# Objective:        Obtain 'patients-like-me' prediction for Timed Up and Go and WOMAC scores
-# Date created:     5/17/2018
-# Modified by:      C.K.
-# Date modified:    11/14/2018
-# - - - - - - - - - - - - - - - - - - - - #
+# Objective:        Obtain 'patients-like-me' prediction for Timed Up 
+#                   and Go and WOMAC scores
+# Modified by:      Randy
 
+## environment  ---------------------------------------------
 
-
-# - - - - - - - - - - - - - - - - - - - - #
-# Environment configuration
-# - - - - - - - - - - - - - - - - - - - - #
-
-## Remove objects in workspace
+## clean workspace -------------------------------------
 rm(list=ls())
-## Load Libs
+
+## packages ---------------------------------------------
 library(pacman)
 p_load(pcr, readxl, dplyr, here, rio)
-## Set working directory
+
+## setup directory ---------------------------------------------
 setwd(paste0(here()))
 
-# - - - - - - - - - - - - - - - - - - - - #
-# Data Import and testing
-# - - - - - - - - - - - - - - - - - - - - #
-
+## import data ---------------------------------------------
+# Mon Apr 05 10:19:33 2021 ------------------------------
+## do not have the dataset yet, so wait
 # load all outcome data
 alldf <- import("./data/all_tka.csv")
 amp  <- import("./data/amp_data_test.csv")

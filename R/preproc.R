@@ -1,156 +1,215 @@
-#' PreProcess Function: Split full data into train/test and match patients using predictive mean matching
+#' PreProcess Function: 
+#' Split full data into train/test and 
+#' match patients using predictive mean matching
 #' 
 #' \code{preproc()} function essentially takes a full dataset along with a list of arguments
 #' necessary to split the data into train/test datasets. After splitting the data 
-#' into a training and testing split, The training data is used to fit a linear mixed model
+#' into a training and testing split, the training data is used to fit a linear mixed model
 #' with a b-s;line using the \code{brokenstick} package. The user specifies the knots 
 #' and the distal outcome of interest (\eqn{\hat{y}}) which essentially is used to perform the 
 #' predictive mean matching. The \eqn{\hat{y}} is used to fit a linear model based on the 
 #' user specified list of matching characteristics provided through the `varlist` argument.
 #' 
-#' @param dff - Full dataset containing both training and testing dataset specified by 
-#' `split_var` column.
-#' @param split_var - A string representing the name of the splitting variable used to split
-#' the full dataset (i.e. `dff`) into training and testing data. THe variable/column should be
-#' numeric type.
-#' @param trainval - A numeric value indicating training set observations. 
-#' If \code{train_val = 1}, then rows in the \code{dff} should have 1 in each of the
-#' `split_var` column.
-#' @param testval - A numeric value indicating testing set observations. 
-#' If \code{test_val = 0}, then rows in the \code{dff} should have 0 in each of the
-#' `split_var` column.
+#' @param dff        - Full dataset containing both training and testing dataset 
+#'                     specified by `split_var` column.
+#' @param split_var  - A string representing the name of the splitting variable 
+#'                     used to split the full dataset (i.e. `dff`) 
+#'                     into training and testing data.
+#'                     THe variable/column should be numeric type.
+#' @param trainval   - A numeric value indicating training set observations. 
+#'                     If \code{train_val = 1}, then rows in the \code{dff} 
+#'                     should have 1 in each of the `split_var` column.
+#' @param testval    - A numeric value indicating testing set observations. 
+#'                     If \code{test_val = 0}, then rows in the \code{dff} 
+#'                     should have 0 in each of the `split_var` column.
 #' @param filter_exp - String that represents filtering of the full data to be processed.
-#' Expression can be of form \code{"time > 3"}. Default is \code{NULL}
+#'                     Expression can be of form \code{"time > 3"}. Default is \code{NULL}
 #' @param knots_exp  - Numeric vector with break points for \code{brokenstick} model
 #' @param out_time   - Single numeric value specifying the distal time. Has to be one of 
-#'                   \code{knots_exp}.
+#'                     \code{knots_exp}.
 #' @param outcome    - String representing the name of the outcomes variable
 #' @param time_var   - String representing the name of the time variable
-#' @param pat_id     - String representing the name of the variable with patient identification
+#' @param pat_id     - String representing the name of the variable 
+#'                     with patient identification
 #' @param baseline_var - String representing the name of the pre-op/post-op 
-#' indicator variable. For example, for pre-op (baseline = 1); 
-#'                   for post-op: (baseline = 0), or otherwise
-#' @param varlist    Names of additional variables for prediction. If not 
-#'                   specified, all variables in \code{dff} are predictors. 
-#'                   Categorical variables may be factor or character.
-#' @param pmmform    - formula representing the model used for predictive mean matching. For example, to regress \code{outcome} on the variables in \code{varlist}, \code{outcome ~ var1 + var2 + var3} 
-#' @param modelselect  - A logical (\code{TRUE/FALSE}) specifying whether to go through a stepwise selection of variables for the predictive mean matching algorithm
+#'                       indicator variable. For example, for pre-op (baseline = 1); 
+#'                       for post-op: (baseline = 0), or otherwise
+#' @param varlist    -  Names of additional variables for prediction. If not 
+#'                      specified, all variables in \code{dff} are predictors. 
+#'                      Categorical variables may be factor or character.
+#' @param pmmform    - formula representing the model used for predictive mean matching. 
+#'                     For example, to regress \code{outcome} on the variables in \code{varlist}, 
+#'                     \code{outcome ~ var1 + var2 + var3} 
+#' @param modelselect  - A logical (\code{TRUE/FALSE}) specifying whether 
+#'                       to go through a stepwise selection of variables 
+#'                       for the predictive mean matching algorithm
 #' @param \dots        - Specification for linear model in the predictive mean matching algorithm.
-#' @param m           - Numeric value representing the Number of repititions of obtaining \eqn{\dot{y}} (i.e. the predicted value from predictive mean matching)
+#' @param m            - Numeric value representing the Number of repetition of 
+#'                       obtaining \eqn{\dot{y}} 
+#'                       (i.e. the predicted value from predictive mean matching)
 #' 
 #' @return  A list with six components. 
 #'          1. Post-baseline training data 
 #'          2. Dataframe with training set patient id and \eqn{\dot{y}} values ordered
-#'          3. Regression dataframe used for the predictive mean matching. the `yhat` column here is the predicted mean values.
+#'          3. Regression dataframe used for the predictive mean matching. 
+#'             the `yhat` column here is the predicted mean values.
 #'          4. Predictive mean matching model object
 #'          5. Post-baseline testing data 
 #'          6. Dataframe with testing set patient id and \eqn{\dot{y}} values ordered
 #' 
 #' @export
-preproc <- function(dff,
-                    split_var = 'train_test',
-                    trainval = 1,
-                    testval = 2,
-                   filter_exp = NULL,               # expression can be of form "time > 3"
-                   knots_exp = c(0, 14, 50, 90),    # select knots that are clinically relevat
-                   out_time = 90,                   # this variable has to be within the knots above
-                   outcome = "tug",
-                   time_var = "time",
-                   pat_id = "patient_id",           # Need the patient_id column to be specified as "patient_id"
-                   baseline_var = "baseline",       # pre-op/post-op indicator variable. preop: baseline = 1; postop: baseline = 0 or otherwise
-                   varlist = NULL,                  # need user to fill in var list otherwise will use all vars, categorical variables need to be factor or character
-                   pmmform = NULL,
-                   modelselect = FALSE,
-                   m=5,
-                   ...) {
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # If baseline_var not  supplied, then stop
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    if(is.null(dff[,baseline_var])){
-        stop("baseline_var is NULL. 
-             Specify  baseline var as string. (e.g.baseline_var = 'baseline').
-             Utility function baselinemk() may be used to create baseline variable.
-             ")
-    }
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # If time variable isn't integer then matching won't be stable due to floating point error
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    if(!is.integer(dff[,time_var])){
-        message(paste0(time_var, " is not an integer! converting to integer! May need to check if this makes sense!"))
-        dff[,time_var] <- as.integer(dff[[time_var]])
-    }
+# Mon Apr 05 11:17:35 2021 ------------------------------
+## whether we can change the return into attributes
+## it is easier to call out of the function
+preproc <- 
+  function(dff,
+           split_var = 'train_test',
+           trainval = 1,
+           testval = 2,
+           ## expression can be of form "time > 3"
+           filter_exp = NULL,    
+           ## select clinical meaningful knots
+           knots_exp = c(0, 14, 50, 90),   
+           ## within the knots above
+           out_time = 90,                   
+           outcome = "tug",
+           time_var = "time",
+           ## patient_id specified as "patient_id"
+           pat_id = "patient_id",  
+           ## pre-op/post-op indicator variable. 
+           ## preop: baseline = 1; 
+           ## postop: baseline = 0 
+           ## or otherwise
+           baseline_var = "baseline",
+           ## need user to fill in var list otherwise will use all vars,
+           ## categorical variables need to be factor or character
+           varlist = NULL,                   
+           pmmform = NULL,
+           modelselect = FALSE,
+           m = 5,
+           ...) {
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # If varlist supplied, then form dataframe that only contains 
-    # ID, Outcome, Time, train/test split variable, and Listed variables 
-    # else stop function
-    # - - - - - - - - - - - - - - - - - - - - - - #
+    ## check baseline ---------------------------------------------
+    if(is.null(dff[, baseline_var])) {
+      stop("baseline_var is NULL. 
+           Specify  baseline var as string. 
+           (e.g.baseline_var = 'baseline').
+           Utility function baselinemk() 
+           may be used to create baseline variable.")
+      }
+    
+    
+    ## check integer ------------------------------------------ 
+    ## If time variable isn't integer 
+    ## then matching won't be stable 
+    ## due to floating point error
+    if(!is.integer(dff[, time_var])) {
+      message(paste0(time_var, 
+                       " is not an integer! 
+                       converting to integer! 
+                       Check if this makes sense!"))
+      dff[, time_var] <- as.integer(dff[[time_var]])
+      }
+
+    
+    ## check varlist ---------------------------------------------
+    # If varlist supplied, 
+    # then form dataframe 
+    # that only contains:
     if(!is.null(varlist)){
-        dff <- dff %>%
-            .[,c(pat_id, outcome, time_var, split_var, baseline_var, varlist)]
+        dff <- dff %>% 
+          ##    (1)id   (2)outcome (3)time, 
+            .[, c(pat_id, outcome, time_var, 
+          ##    (4)train/test (5)baseline   (6)listed         
+                  split_var,  baseline_var, varlist)]
     } else {
-        stop("varlist not populated: specify varlist = c('var1','var2',...)")
-    }
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # Non complete covariate matrix! Stop
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    if(
-       any(
-           !dff[,c(pat_id, outcome, time_var, split_var, baseline_var, varlist)] %>% complete.cases
-       )
-       ){
-        stop("missin data in the data!")
+        stop("varlist not populated: 
+             specify varlist = c('var1','var2',...)")
     }
     
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # Check for duplicated values in baseline and postoperative
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    if(any(dff %>% filter(.$baseline == 1) %>% select_(pat_id) %>% unlist %>% duplicated)){
-        warning("Duplicate baseline values exist within training and testing set! remove them before running preproc")
-    }
-  
-  if(
-    any(c(
-      # Training set duplicated?
-      dff %>%
-      filter(.$train_test == 1 & .$baseline == 1) %>%
-      select(pat_id) %>%
-      unlist %>% duplicated,
-      # Test set duplicated?
-      dff %>%
-      filter(.$train_test == 2 & .$baseline == 1) %>%
-      select(pat_id) %>%
-      unlist %>% duplicated
-    ))
-  ){
-    warning("Duplicate baseline values exist within either the training and testing set! remove them before running preproc")
-    }
+    
+    ## check completeness ---------------------------------------------
+    if(any(!dff[, c(pat_id, 
+                    outcome, 
+                    time_var, 
+                    split_var, 
+                    baseline_var, 
+                    varlist)] %>% 
+           complete.cases)) {
+      stop("missin data in the data!")
+      }
+    
+    ## check duplication -----------------------------------------------
+    if(any(dff %>% 
+           filter(.$baseline == 1) %>% 
+           dplyr::select_(pat_id) %>% 
+           unlist() %>% 
+           duplicated())) {
+      warning("Duplicate baseline values exist within 
+              training and testing set! 
+              remove them before running preproc")
+      }
+    
+    ## check training ----------------------------------------------
+    if (any(dff %>%
+            ## check duplication in training data
+            filter(.$train_test == 1 &
+                   .$baseline == 1) %>%
+            dplyr::select(pat_id) %>%
+            unlist() %>%
+            duplicated())) {
+            warning("Duplicate baseline values exist 
+                    within the training set! 
+                    remove them before running preproc")
+      }
+    
+    
+    # Mon Apr 05 11:44:46 2021 ------------------------------
+    ## check testing and training seperated
+    ## check testing ---------------------------------------------
+    if (any(dff %>%
+            ## check duplication in testing data
+            filter(.$train_test == 2 & 
+                   .$baseline == 1) %>%
+            dplyr::select(pat_id) %>%
+            unlist() %>% 
+            duplicated())) {
+      warning("Duplicate baseline values exist 
+              within the testing set! 
+              remove them before running preproc")
+      }
+    
+    # Mon Apr 05 11:42:19 2021 ------------------------------
+    ## not sure what does this mean
+    # if(dff %>%
+    #    filter(.data$baseline == 0) %>%
+    #    dplyr::select_(pat_id, time_var) %>% 
+    #    nrow !=
+    #    
+    #    dff %>%
+    #    filter(.data$baseline == 0) %>%
+    #    dplyr::select_(pat_id, time_var) %>%
+    #    distinct_(pat_id, time_var)  %>% 
+    #    nrow  ) {
+    #    stop("Duplicate post operative values exist!
+    #           remove them before running preproc")
+    #   }
 
-    # if(
-    #    dff %>% 
-    #        filter(.data$baseline == 0) %>% 
-    #        dplyr::select_(pat_id, time_var) %>% nrow != 
-    #        dff %>% 
-    #        filter(.data$baseline == 0) %>% 
-    #        dplyr::select_(pat_id, time_var) %>% 
-    #        distinct_(pat_id, time_var)  %>% nrow
-    # ){
-    #     stop("Duplicate post operative values exist! remove them before running preproc")
-    # }
-
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # Check whether train and test cases have both pre and post op values
-    # - - - - - - - - - - - - - - - - - - - - - - #
+    
+    ## check the pre/post ---------------------------------------------
+    ## whether train and test cases have both pre and post op values
+    # Mon Apr 05 11:47:51 2021 ------------------------------
+    ## change the select_() into select()
+ 
     exclude <- dff %>% 
         filter(.data$baseline == 1) %>%
-        dplyr::select_(pat_id, outcome) %>% 
-        full_join(
-                  dff %>% 
-                      filter(.data$baseline ==1) %>%
-                      distinct_(pat_id, .keep_all =TRUE) %>%
-                      dplyr::select_(pat_id, outcome) %>% 
-                      dplyr::rename_("p_outcome" = outcome),
+        dplyr::select(matches(pat_id, outcome)) %>% 
+        full_join(dff %>% 
+                  filter(.data$baseline == 1) %>%
+                  distinct_(pat_id, .keep_all = TRUE) %>%
+                  dplyr::select_(pat_id, outcome) %>% 
+                  dplyr::rename_("p_outcome" = outcome),
                   by = c(pat_id)
                   ) %>%
         filter(is.na(.data$p_outcome) | is.na(.[outcome])) 

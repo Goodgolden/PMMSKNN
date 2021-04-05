@@ -225,7 +225,7 @@ loocv_function_bs <- function(nearest_n = seq(20,150,by=10), # number to play wi
                         arrange(.data$covdiff, .data$rmse, .data$prec)  %>%
                         head(1) %>%
                         .[,"nearest_n"]
-                } else if(perfrank=="bias"){
+                } else if (perfrank=="bias"){
                     opt_n <- perfdf %>%
                         mutate(
                             covdiff = round(abs(.data$cov - .data$opt_cov), perf_round_by),
