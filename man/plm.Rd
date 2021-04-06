@@ -7,12 +7,12 @@
 plm(ref = ref, matchmodel = matchmodel)
 }
 \arguments{
-\item{ref}{Reference model from the \code{\link{fitrefgamlss}}.}
+\item{ref}{- gamlss model object generated from using the \code{\link{fitrefgamlss}}. This would be a reference model fit to the whole population dataset.}
 
 \item{matchmodel}{- dataset generated from the \code{\link{matchTrainDataGen}}}
 }
 \value{
-There are many possible return values
+A fitted gamlss object that is used within the \code{\link{loocv_function}} where the object is updated according to the closest \code{n} matches.
 }
 \description{
 The function fits an initial GAMLSS distribution to the full data

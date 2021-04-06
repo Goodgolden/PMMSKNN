@@ -2,47 +2,59 @@
 % Please edit documentation in R/plot_NthP_plm.R
 \name{plot_NthP_plm}
 \alias{plot_NthP_plm}
-\title{Plot Nth Percentile patient like me plots}
+\title{Plot Nth Percentile patient like me plots using PMMSKNN-GAMLSS}
 \usage{
-plot_NthP_plm(plotobj, test_proc = test_proc, outcome = "tug",
-  time_var = "time", nvec = c(0.2, 0.8), mtype = 1, n = 10,
-  dist = BCCGo, df_m = 2, df_s = 1, df_n = 1, df_t = 1,
-  xvalues = 3:200, ...)
+plot_NthP_plm(
+  test_proc = test_proc,
+  outcome = "tug",
+  nvec = c(0.2, 0.8),
+  mtype = 1,
+  n = 10,
+  dist = BCCGo,
+  df_m = 2,
+  df_s = 1,
+  df_n = 1,
+  df_t = 1,
+  xvalues = 3:200,
+  chartname = "Patient Reference Chart",
+  name = "Patient",
+  ...
+)
 }
 \arguments{
-\item{plotobj}{An object produced by \code{\link{loocv_function}}}
+\item{test_proc}{- Preprocessed object from \code{\link{preproc}}}
 
-\item{test_proc}{- An object produced by \code{\link{preproc}}}
+\item{outcome}{- Name of the outcomes variable (type=string)}
 
-\item{outcome}{Name of the outcome variable}
-
-\item{time_var}{Name of the time variable}
-
-\item{nvec}{vector of two proportions (e.g. \code{nvec = c(0.2,0.8)}).
+\item{nvec}{- Vector of two proportions (e.g. \code{nvec = c(0.2,0.8)}).
 These values indicate the lower and upper n-th percentile/100 person to plot.}
 
 \item{mtype}{- Integer value indicating matching type. Default is set to 1 which follows the
-matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}.}
+matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are 
+from \code{0} to \code{4}}
 
-\item{n}{Integer representing number of matches.}
+\item{n}{- Integer representing number of matches.}
 
-\item{dist}{object of gamlss.dist specifying the distribution for gamlss}
+\item{dist}{- Object of \code{\link{gamlss.dist}} specifying the distribution for gamlss}
 
-\item{df_m}{Number representing the degrees of freedome for the location parameter}
+\item{df_m}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the mean parameter of the distribution specified according to \code{dist_fam}}
 
-\item{df_s}{Number representing the degrees of freedome for the sigma parameter}
+\item{df_s}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the scale parameter of the distribution specified according to \code{dist_fam}}
 
-\item{df_n}{Number representing the degrees of freedome for the nu parameter}
+\item{df_n}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the shape parameter, specifically the \eqn{\nu} parameter, of the distribution specified according to \code{dist_fam}}
 
-\item{df_t}{Number representing the degrees of freedome for the tau parameter}
+\item{df_t}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the shape parameter, specifically the \eqn{\tau} parameter, of the distribution specified according to \code{dist_fam}}
 
-\item{xvalues}{Vector of values for the prediction centile to be plotted}
+\item{xvalues}{- Vector of values for the prediction centile to be plotted}
 
-\item{\dots}{Not used}
+\item{chartname}{- String indicating name of chart}
+
+\item{name}{- String indicating name of object (default: "Patient")}
+
+\item{\dots}{- Options to specify in the plotting of the percentile curves.}
 }
 \value{
-A list with components ..., or an object of class 
-\code{ggplot} [??]
+An object of class \code{ggplot} that outputs a gamlss predition curve for 2 individuals in terms of their predicted values over time.
 }
 \description{
 Creates two plots.

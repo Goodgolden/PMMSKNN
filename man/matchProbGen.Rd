@@ -2,25 +2,28 @@
 % Please edit documentation in R/matchProbGen.R
 \name{matchProbGen}
 \alias{matchProbGen}
-\title{Match Probability Generating Function: create data frame of ID's with probability weights}
+\title{Match ID generation based on Probability Weighting: Create data frame of ID's using probability weights}
 \usage{
 matchProbGen(ord_data, mtype, n, m, i)
 }
 \arguments{
-\item{ord_data}{dataset. Training data from \code{\link{preproc}}.}
+\item{ord_data}{Data frame. Specifically, training data with patient_id ordered based on fitted distal outcome value using predicted mean matching.
+Generated using \code{\link{preproc}}. Example, \code{x <- preproc()}, 
+then \code{x$train_o} would be used for this parameter.}
 
-\item{mtype}{Integer value indicating matching type. Default is set to 1 which follows the
-matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}.}
+\item{mtype}{- Integer value indicating matching type. Default is set to 1 which follows the
+matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are 
+from \code{0} to \code{4}}
 
 \item{n}{Number of matches}
 
-\item{m}{Number of repititions of obtaining \eqn{\dot{y}}}
+\item{m}{- For \code{mtype = 4}, which is type 4 matching from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}, the Number of repititions for obtaining \eqn{\dot{y}} in terms of the predictive mean matching process.}
 
-\item{i}{Patient id indicator.}
+\item{i}{(Patient) Id indicator.}
 }
 \value{
 A vector of patient id numbers
 }
 \description{
-Match Probability Generating Function: create data frame of ID's with probability weights
+Match ID generation based on Probability Weighting: Create data frame of ID's using probability weights
 }

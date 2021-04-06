@@ -4,10 +4,18 @@
 \alias{predZsc}
 \title{Predict Z-Score for Training and Testing Data}
 \usage{
-predZsc(plmr = plmr, traintestmatchdf = traintestmatchdf,
-  matchmodel = matchmodel, ord_data = ord_data,
-  train_post = train_post, test_post = test_post, loocv = loocv,
-  time_elapsed = time_elapsed, outcome = outcome, i = i)
+predZsc(
+  plmr = plmr,
+  traintestmatchdf = traintestmatchdf,
+  matchmodel = matchmodel,
+  ord_data = ord_data,
+  train_post = train_post,
+  test_post = test_post,
+  loocv = loocv,
+  time_elapsed = time_elapsed,
+  outcome = outcome,
+  i = i
+)
 }
 \arguments{
 \item{plmr}{Fitted object from \code{\link{plm}}}

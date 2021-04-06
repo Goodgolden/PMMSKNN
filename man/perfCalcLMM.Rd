@@ -2,7 +2,7 @@
 % Please edit documentation in R/perfCalcLMM.R
 \name{perfCalcLMM}
 \alias{perfCalcLMM}
-\title{Calculate Performance (bias, coverage, and precision) from linear mixed model}
+\title{Calculate Performance (bias, coverage, and precision) based on fitting a linear Mixed Model to longitudinal data}
 \usage{
 perfCalcLMM(fit, n = 1000, train, test, parallel = FALSE, outcome)
 }
@@ -18,14 +18,13 @@ included.}
 \item{test}{A dataframe of testing observations with \code{outcome} column
 included.}
 
-\item{parallel}{Boolean value indicating whether or not to use parallel computing.
+\item{parallel}{Boolean value (i.e. \code{TRUE/FALSE}) indicating whether or not to use parallel computing.
 Default is set to FALSE. If \code{true}, then uses multicore capability.}
 
 \item{outcome}{A column name (i.e. string type) indicating \code{outcome} column}
 }
 \value{
-A data frame with components ..., or an object of class 
-\code{ggplot} [??]
+A list of data frames. 1) \code{perfsum}: Data frame that summarizes the performance based on a variety of variance/confidence interval estimation of LMM; 2) \code{predictInterval1, predictInterval1a, predictInterval1b}: List of two data frames that contain the prediction (95% CI) for training and testing data; 3) \code{bootMerpar, bootMersp}: List of two data frames that contain the prediction (95% CI) for training and testing data using bootMer package
 }
 \description{
 Creates Data Frame:

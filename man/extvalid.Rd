@@ -12,7 +12,7 @@ extvalid(loocvobj, test_proc)
 \item{test_proc}{An object produced by \code{\link{preproc}}}
 }
 \value{
-A vector of length 3
+A data frame that contains columns of performance measures. The performance measures include difference in prediction (bias), root mean square error (rmse), difference in z-score (zscore), 50% coverage probability (Probability that predictions are included in the inter-quartile range (i.e. 25% to 75%))
 }
 \description{
 Calculate external validation measures of bias, coverage and precision

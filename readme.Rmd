@@ -57,21 +57,20 @@ devtools::install_local('.')
 ### Load Libraries and the `ChickWeight` data
 ```{r package}
 library("pacman")
-p_load(PMMSKNN, dplyr, here)
+pacman::p_load(PMMSKNN, dplyr, here)
 data("ChickWeight") 
 ## example tug data
 ```
 
 ### Wrangle ChickWeight data
 ```{r wrangledata}
-# load only the TUG dataset
-full_0  <- ChickWeight %>%
-  rename(patient_id = 3,
-         time = 2)
-
 # Train and Test split for all weight outcome: create 
 set.seed(1234)
-full <- 
+
+# load only the TUG dataset
+full  <- ChickWeight %>%
+  rename(patient_id = 3,
+         time = 2) %>% 
   PMMSKNN:::baselinemk(full_0, "patient_id", "time") %>%
   ## filter 10 patients as test with baselinemk()
   mutate(

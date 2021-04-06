@@ -2,7 +2,7 @@
 % Please edit documentation in R/calplotDFgen.R
 \name{calplotDFgen}
 \alias{calplotDFgen}
-\title{Generate DataFrame for Calibration plot (for Continuous Value Predictions)}
+\title{Generate a DataFrame for producing a calibration plot (for Continuous Value Predictions)}
 \usage{
 calplotDFgen(observed, predicted, n = 10)
 }
@@ -15,9 +15,9 @@ calplotDFgen(observed, predicted, n = 10)
 Default is 10.}
 }
 \value{
-A lsit of data frames data frame components ..., or an object of class 
-\code{ggplot} [??]
+A data frame used to generate calibration plots (using \code{"ggplot"}) for training and testing data.
 }
 \description{
-Generate DataFrame for Calibration plot (for Continuous Value Predictions)
+This is a utility function that takes two vectors of observed and predicted values 
+in order to generate a dataframe necessary for producing a calibration plot.
 }

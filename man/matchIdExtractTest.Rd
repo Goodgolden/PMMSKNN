@@ -7,17 +7,19 @@
 matchIdExtractTest(test_proc, mtype, i, n)
 }
 \arguments{
-\item{test_proc}{object processed after using \code{\link{preproc}}.}
+\item{test_proc}{Object processed after using \code{\link{preproc}}. 
+For example, \code{x <- preproc()}, then \code{test_proc = x}}
 
-\item{mtype}{Integer value indicating matching type. Default is set to 1 which follows the
-matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}.}
+\item{mtype}{- Integer value indicating matching type. Default is set to 1 which follows the
+matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are 
+from \code{0} to \code{4}}
 
-\item{i}{(Test) Patient id indicator.}
+\item{i}{(Test patient) id indicator.}
 
 \item{n}{Number of matches}
 }
 \value{
-A vector of patient id numbers
+A vector of (patient) id numbers
 }
 \description{
 Match ID Function: create vector of (Training set) ID values for Test set cases

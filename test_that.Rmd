@@ -6,8 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      error = recover)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
@@ -17,15 +16,16 @@ library(devtools)
 # library(PMMSKNN)
 ```
 
-```{r error = recove}
+```{r error = recover}
 # devtools::install_github('ck2136/PMMSKNN')
 devtools::load_all()
-test_check("PMMSKNN")
+# test_check("PMMSKNN")
 
-debug(PMMSKNN::preproc)
+debug(PMMSKNN:::preproc)
 
-use_r("calplotDFgen.R")
-use_test("calplotDFgen.R")
+
+use_r("preproc.R")
+use_test("preproc.R")
 use_test("baselinemk")
 
 

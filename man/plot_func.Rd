@@ -2,39 +2,54 @@
 % Please edit documentation in R/plot_func.R
 \name{plot_func}
 \alias{plot_func}
-\title{Plot function under plot_cal() function}
+\title{Generate Calibration Plot for Training or Testing Data}
 \usage{
-plot_func(plotobj = plotobj, train = TRUE, test_proc = test_proc,
-  filt = filt, iqrfull = iqrfull, pred_sum = pred_sum,
-  obs_dist = obs_dist, outcome = outcome, filter_exp = NULL)
+plot_func(
+  plotobj = plotobj,
+  train = TRUE,
+  test_proc = test_proc,
+  filt = filt,
+  iqrfull = iqrfull,
+  pred_sum = pred_sum,
+  obs_dist = obs_dist,
+  outcome = outcome,
+  filter_exp = NULL
+)
 }
 \arguments{
-\item{plotobj}{An object produced by \code{\link{loocv_function}}}
+\item{plotobj}{- An object produced by \code{\link{loocv_function}}}
 
-\item{train}{-}
+\item{train}{- Logical indicating whether or not to generate
+calibration plot for training set. Default is \code{TRUE}.}
 
-\item{test_proc}{-}
+\item{test_proc}{- Preprocessed object from \code{\link{preproc}}}
 
-\item{filt}{Logical indicating ...}
+\item{filt}{Logical (\code{TRUE/FALSE}) indicating whether or not to
+filter the data in terms of performance values. This would be useful
+if the user would want to exclude certain values in presenting the data}
 
 \item{iqrfull}{- Dataframe containing gamlss predictions which triggers the plotting of 
 reference model prediction on the same plot as that of the patient like me 
-predictions.
-values onto the calibration plot}
+predictions.}
 
-\item{pred_sum}{-}
+\item{pred_sum}{- String value representing the summary used to depict
+the predictions within the calibration. Usually \code{pred_sum = 'mean'} 
+or \code{pred_sum = 'median'} would be a good choice to depict the 
+summary statistic of predicted values across the deciles of observed values}
 
-\item{obs_dist}{-}
+\item{obs_dist}{- String value representing the summary used to depict
+the observed value within the calibration plot. 
+Usually \code{pred_sum = 'median'} woud be a good choice to depict the 
+deciles of observed values in the calibration plot.}
 
-\item{outcome}{Name of the outcome variable}
+\item{outcome}{- Name of the outcomes variable (type=string)}
 
 \item{filter_exp}{- String. For filtering possible values of bias, precision, and coverage values that are out of range. (e.g. \code{"bias < 1.5"})}
 
-\item{\dots}{Not used}
+\item{\dots}{- For specifying plotting options.}
 }
 \value{
-A list with components ..., or an object of class 
-\code{ggplot} [??]
+An object of class \code{ggplot} that outputs a calibration plot of observed vs. deciles of predicted values for training or testing data depending on \code{train=}.
 }
 \description{
 Creates two types of plots.

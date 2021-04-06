@@ -2,41 +2,51 @@
 % Please edit documentation in R/plot_ref_plm.R
 \name{plot_ref_plm}
 \alias{plot_ref_plm}
-\title{Plot reference and patient like me plot}
+\title{Plot reference and personalized plot}
 \usage{
-plot_ref_plm(plotobj, test_proc = test_proc, outcome = "tug",
-  time_var = "time", patnum = 219, dist = NO, df_m = 2, df_s = 1,
-  df_n = 1, df_t = 1, xvalues = 3:200, ...)
+plot_ref_plm(
+  plotobj,
+  test_proc = test_proc,
+  outcome = "tug",
+  time_var = "time",
+  patnum = 219,
+  dist = NO,
+  df_m = 2,
+  df_s = 1,
+  df_n = 1,
+  df_t = 1,
+  xvalues = 3:200,
+  ...
+)
 }
 \arguments{
-\item{plotobj}{An object produced by \code{\link{loocv_function}}}
+\item{plotobj}{- An object produced by \code{\link{loocv_function}}}
 
-\item{test_proc}{- An object produced by \code{\link{preproc}}}
+\item{test_proc}{- Preprocessed object from \code{\link{preproc}}}
 
-\item{outcome}{Name of the outcome variable}
+\item{outcome}{- Name of the outcomes variable (type=string)}
 
-\item{time_var}{Name of the time variable}
+\item{time_var}{- Name of the time variable. (type=string)}
 
-\item{patnum}{Integer value of the patient number to plot alongside
+\item{patnum}{- Integer value of the patient number to plot alongside
 the population reference chart}
 
-\item{dist}{object of gamlss.dist specifying the distribution for gamlss}
+\item{dist}{- Object of \code{\link{gamlss.dist}} specifying the distribution for gamlss}
 
-\item{df_m}{Number representing the degrees of freedome for the location parameter}
+\item{df_m}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the mean parameter of the distribution specified according to \code{dist_fam}}
 
-\item{df_s}{Number representing the degrees of freedome for the sigma parameter}
+\item{df_s}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the scale parameter of the distribution specified according to \code{dist_fam}}
 
-\item{df_n}{Number representing the degrees of freedome for the nu parameter}
+\item{df_n}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the shape parameter, specifically the \eqn{\nu} parameter, of the distribution specified according to \code{dist_fam}}
 
-\item{df_t}{Number representing the degrees of freedome for the tau parameter}
+\item{df_t}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the shape parameter, specifically the \eqn{\tau} parameter, of the distribution specified according to \code{dist_fam}}
 
-\item{xvalues}{Vector of values for the prediction centile to be plotted}
+\item{xvalues}{- Vector of values for the prediction centile to be plotted}
 
-\item{\dots}{Not used}
+\item{\dots}{- Options to specify in the \code{ggplot()} function used for plotting the reference and personalized plot}
 }
 \value{
-A list with components ..., or an object of class 
-\code{ggplot} [??]
+An object of class \code{ggplot} that outputs a gamlss predition curve for the population and a personalized plot in terms of predicted values over time.
 }
 \description{
 Creates two plots.

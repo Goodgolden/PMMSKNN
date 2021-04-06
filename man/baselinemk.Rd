@@ -4,12 +4,12 @@
 \alias{baselinemk}
 \title{Function to add baseline variable}
 \usage{
-baselinemk(dftotf, pat_id = "patient_id", time_var = "time")
+baselinemk(dftotf, pat_id, time_var)
 }
 \arguments{
-\item{dftotf}{data frame to create baseline column.
-The data frame must contain specified `pat_id` and
-`time_var`.}
+\item{dftotf}{data frame to transform 
+(i.e. data frame where a new column - baseline column - will be added).
+The data frame must contain specified `pat_id` and `time_var`.}
 
 \item{pat_id}{string of characters representing the column
 of patient id.}
@@ -17,11 +17,14 @@ of patient id.}
 \item{time_var}{string of characters representing the column
 of time.}
 }
+\value{
+A data frame that contains a new `baseline` column indicating the baseline observation (i.e. row).
+}
 \description{
-`baseline` column is created based on the full dataframe
+`baseline` column is created based on the full data frame
 provided by the user. If the `time_var` column contains 
 more than one potential baseline values (i.e. values <= 0)
 then `baselinemk()` will arrange the times according to 
 closest value to 0 then assign that as baseline = 1 
-while the other potential values will be assigne -1.
+while the other potential baseline values will be assigne -1.
 }

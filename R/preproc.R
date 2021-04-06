@@ -208,8 +208,8 @@ preproc <-
         full_join(dff %>% 
                   filter(.data$baseline == 1) %>%
                   distinct_(pat_id, .keep_all = TRUE) %>%
-                  dplyr::select_(pat_id, outcome) %>% 
-                  dplyr::rename_("p_outcome" = outcome),
+                  dplyr::select(matches(c(pat_id, outcome))) %>% 
+                  dplyr::rename("p_outcome" = !!outcome),
                   by = c(pat_id)
                   ) %>%
         filter(is.na(.data$p_outcome) | is.na(.[outcome])) 
@@ -222,9 +222,11 @@ preproc <-
     # - - - - - - - - - - - - - - - - - - - - - - #
     # Split test/train 
     # - - - - - - - - - - - - - - - - - - - - - - #
+    train_string <- paste0(split_var, "==", trainval)
+    test_string <- paste0(split_var, "==",testval)
 
-    df_train <-dff  %>% filter_(paste0(split_var, "==", trainval)) 
-    df_test <- dff %>% filter_(paste0(split_var, "==",testval))
+    df_train <-dff  %>% filter(!!train_string) 
+    df_test <- dff %>% filter(!!test_string)
 
     # - - - - - - - - - - - - - - - - - - - - - - #
     # Split test/train by pre and post using baseline_var

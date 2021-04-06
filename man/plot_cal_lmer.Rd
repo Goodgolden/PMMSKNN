@@ -4,11 +4,10 @@
 \alias{plot_cal_lmer}
 \title{Plot for calibration of LMM models}
 \usage{
-plot_cal_lmer(fit, train, test, outcome, perfObj = NULL, fitopt = 1,
-  ...)
+plot_cal_lmer(fit, train, test, outcome, perfObj = NULL, fitopt = 1, ...)
 }
 \arguments{
-\item{fit}{An object produced by \code{lmer} function.}
+\item{fit}{An model fit object produced by \code{lmer} function.}
 
 \item{train}{A dataframe of training observations with \code{outcome} column
 included.}
@@ -27,8 +26,7 @@ included.}
 \item{\dots}{Used for specifying options in the predict() method}
 }
 \value{
-A list with components ..., or an object of class 
-\code{ggplot} [??]
+An object of class \code{ggplot} that outputs a calibration plot of observed vs. deciles of predicted values based on a LMM.
 }
 \description{
 Creates Calibration Plots:

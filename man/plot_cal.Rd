@@ -4,49 +4,65 @@
 \alias{plot_cal}
 \title{Plot for statistical validity and calibration}
 \usage{
-plot_cal(plotobj, test_proc = test_proc, outcome = "tug",
-  filt = FALSE, pred_sum = "mean", obs_dist = "median",
-  loocv = TRUE, filter_exp = NULL, plot_cal_zscore = FALSE,
-  wtotplot = FALSE, plotvals = FALSE, iqrfull = NULL, ...)
+plot_cal(
+  plotobj,
+  test_proc = test_proc,
+  outcome = "tug",
+  filt = FALSE,
+  pred_sum = "mean",
+  obs_dist = "median",
+  loocv = TRUE,
+  filter_exp = NULL,
+  plot_cal_zscore = FALSE,
+  wtotplot = FALSE,
+  plotvals = FALSE,
+  iqrfull = NULL,
+  bs = FALSE,
+  ...
+)
 }
 \arguments{
-\item{plotobj}{An object produced by \code{\link{loocv_function}}}
+\item{plotobj}{- An object produced by \code{\link{loocv_function}}}
 
 \item{test_proc}{- Preprocessed object from \code{\link{preproc}}}
 
-\item{outcome}{Name of the outcome variable}
+\item{outcome}{- Name of the outcomes variable (type=string)}
 
-\item{filt}{Logical indicating ...}
+\item{filt}{Logical (\code{TRUE/FALSE}) indicating whether or not to
+filter the data in terms of performance values. This would be useful
+if the user would want to exclude certain values in presenting the data}
 
-\item{pred_sum}{-}
+\item{pred_sum}{- String value representing the summary used to depict
+the predictions within the calibration. Usually \code{pred_sum = 'mean'} 
+or \code{pred_sum = 'median'} would be a good choice to depict the 
+summary statistic of predicted values across the deciles of observed values}
 
-\item{obs_dist}{-}
+\item{obs_dist}{- String value representing the summary used to depict
+the observed value within the calibration plot. 
+Usually \code{pred_sum = 'median'} woud be a good choice to depict the 
+deciles of observed values in the calibration plot.}
 
 \item{loocv}{Logical indicating the type of plot: 
 Model performance plot (if \code{loocv = TRUE}, default), 
 or or calibration plot (if \code{loocv = FALSE}).}
 
-\item{filter_exp}{-}
+\item{filter_exp}{- String. For filtering possible values of bias, precision, and coverage values that are out of range. (e.g. \code{"bias < 1.5"})}
 
-\item{plot_cal_zscore}{- Logical indicating whether to plot zscore calibration}
+\item{plot_cal_zscore}{- Logical (\code{TRUE/FALSE}) indicating whether to plot zscore calibration}
 
-\item{wtotplot}{- Logical indicating wehter to include a weighted total score plot
-that indicates the optimal n match based on equally weighting bias, coverage and 
-precision}
+\item{wtotplot}{- Logical (\code{TRUE/FALSE}) indicating wehter to include a weighted total score plot
+that indicates the optimal n match based on equally weighting bias, coverage and precision}
 
-\item{plotvals}{- Logical indicating whether to plot bias, coverage, and precision
-values onto the calibration plot}
+\item{plotvals}{- Logical (\code{TRUE/FALSE}) indicating whether to plot bias, coverage, and precision values onto the calibration plot}
 
-\item{iqrfull}{- Dataframe containing gamlss predictions which triggers the plotting of 
-reference model prediction on the same plot as that of the patient like me 
-predictions.
-values onto the calibration plot}
+\item{iqrfull}{- Dataframe containing gamlss predictions which triggers the plotting of reference model prediction on the same plot as that of the patient like me predictions.}
 
-\item{\dots}{Not used}
+\item{bs}{Logical (\code{TRUE/FALSE}) indicating whether to plot brokenstick object.}
+
+\item{\dots}{- For specifying plotting options.}
 }
 \value{
-A list with components ..., or an object of class 
-\code{ggplot} [??]
+An object of class \code{ggplot} that outputs a calibration plot of observed vs. deciles of predicted values.
 }
 \description{
 Creates two types of plots.

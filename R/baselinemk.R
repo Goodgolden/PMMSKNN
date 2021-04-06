@@ -1,38 +1,39 @@
 #' Function to add baseline variable
 #'
 #' @description `baseline` column is created based on the full data frame
-#' provided by the user. If the `time_var` column contains 
+#' provided by the user. If the `time_var` column contains
 #' more than one potential baseline values (i.e. values <= 0)
-#' then `baselinemk()` will arrange the times according to 
-#' closest value to 0 then assign that as baseline = 1 
-#' while the other potential baseline values will be assigne -1. 
+#' then `baselinemk()` will arrange the times according to
+#' closest value to 0 then assign that as baseline = 1
+#' while the other potential baseline values will be assigne -1.
 #'
-#' @param dftotf data frame to transform 
+#' @param dftotf data frame to transform
 #'   (i.e. data frame where a new column - baseline column - will be added).
 #'   The data frame must contain specified `pat_id` and `time_var`.
 #' @param pat_id string of characters representing the column
 #'   of patient id.
 #' @param time_var string of characters representing the column
 #'   of time.
-#'   
+#'
 #' @return A data frame that contains a new `baseline` column indicating the baseline observation (i.e. row).
-#' 
+#'
 #' @export
 baselinemk <- function(dftotf,
                        pat_id,
-                       time_var){
-  dftotf <- 
+                       time_var) {
+  dftotf <-
     dftotf %>%
     left_join(dftotf %>%
-                dplyr::select(pat_id, time_var) %>%
-                filter(time_var <= 0) %>%
-                arrange(pat_id, desc(time_var)) %>%
-                group_by(dftotf$pat_id) %>%
-                mutate(baseline = if_else(row_number() == 1, 1, -1)),
-              by = c(pat_id, time_var)) 
-  
+      dplyr::select(pat_id, time_var) %>%
+      filter(time_var <= 0) %>%
+      arrange(pat_id, desc(time_var)) %>%
+      group_by(dftotf$pat_id) %>%
+      mutate(baseline = if_else(row_number() == 1, 1, -1)),
+    by = c(pat_id, time_var)
+    )
+
   dftotf <- dftotf %>%
     mutate(baseline = if_else(is.na(.data$baseline), 0, .data$baseline))
-  
+
   return(dftotf)
 }

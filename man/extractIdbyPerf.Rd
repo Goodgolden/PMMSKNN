@@ -2,7 +2,7 @@
 % Please edit documentation in R/extractIdbyPerf.R
 \name{extractIdbyPerf}
 \alias{extractIdbyPerf}
-\title{Extract ID by Bias: extracts ID value from loocv and percentile based on bias}
+\title{Extract ID by Performance: extracts ID value from processed object from `preproc()` based on the percentile of bias value of individuals}
 \usage{
 extractIdbyPerf(test_proc, perc)
 }
@@ -12,8 +12,11 @@ extractIdbyPerf(test_proc, perc)
 \item{perc}{Floating point value indicating N/100 percentile ID to look for.}
 }
 \value{
-A numeric value of patient id number
+A numeric value representing patient id number
 }
 \description{
-Extract ID by Bias: extracts ID value from loocv and percentile based on bias
+`extractIdbyPerf` is a utility function that returns one single id number based on the 
+`perc` (numeric) argument provided. This is useful to determine the n-th percentile person
+in terms of the overall performance values 
+(could be a combination of bias, coverage, and precision) obtained from the LOOCV process.
 }

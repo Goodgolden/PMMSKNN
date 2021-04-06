@@ -4,48 +4,61 @@
 \alias{fitrefgamlss}
 \title{Fit reference GAMLSS on the full data}
 \usage{
-fitrefgamlss(dist_fam = NULL, train_post, test_post, outcome,
-  time_elapsed, time_window = NULL, cs = FALSE, dfspec = NULL,
-  d_f_m = 1.8, ptr_m = 1, d_f_s = 1.2, d_f_n = 1, d_f_t = 1, ...)
+fitrefgamlss(
+  dist_fam = NULL,
+  train_post,
+  test_post,
+  outcome,
+  time_elapsed,
+  time_window = NULL,
+  cs = FALSE,
+  dfspec = NULL,
+  d_f_m = 1.8,
+  ptr_m = 1,
+  d_f_s = 1.2,
+  d_f_n = 1,
+  d_f_t = 1,
+  ...
+)
 }
 \arguments{
-\item{dist_fam}{gamlss distribution specification}
+\item{dist_fam}{- gamlss distribution specification using the \code{\link{gamlss.dist}} package. The specification for a normal distribution would be \code{gamlss.dist::NO}. For other distributions see \code{\link{gamlss.dist}}.}
 
-\item{train_post}{- datasets, typically the \code{train_post} list component 
-of the object produced by \code{\link{preproc}}.}
+\item{train_post}{- Data frame that contains the post-baseline observations from the training dataset. Typically this would be the \code{train_post} list component that was generated from the \code{\link{preproc}} function}
 
-\item{test_post}{Idem, component \code{test_post}}
+\item{test_post}{- Data frame that contains the post-baseline observations from the testing dataset. Typically this would be the \code{train_post} list component that was generated from the \code{\link{preproc}} function}
 
-\item{outcome}{Name of the outcomes variable}
+\item{outcome}{- Name of the outcomes variable (type=string)}
 
 \item{time_elapsed}{- Name of the time variable. (type=string)}
 
-\item{time_window}{- vector of numbers for `centiles.pred()`, `xvalues` argument}
+\item{time_window}{- vector of numbers for `centiles.pred()`, `xvalues` argument. For example, specify such as \code{c(10:30)}}
 
 \item{cs}{Logical that specifies whether to use cubic spline. 
 The default \code{cs = FALSE} uses ...}
 
-\item{dfspec}{Logical that specifies whether to the user sets
-degrees of freedom (...not clear to me what it does, and how it 
-interacts with the next set of arguments)}
+\item{dfspec}{- Logical (\code{TRUE/FALSE}) that specifies whether to 
+specify degrees of freedoms for the location, scale, and shape parameters
+for the distribution specified with \code{dist_fam}.
+Default value is \code{NULL}.}
 
-\item{d_f_m}{... explain: arguments probably mean different things for different distributions. Might be preferable to package it with \code{dist_fam}}
+\item{d_f_m}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the mean parameter of the distribution specified according to \code{dist_fam}}
 
-\item{ptr_m}{-}
+\item{ptr_m}{- Numeric value that specifies the power transformation of time variable. Default value is 1.}
 
-\item{d_f_s}{-}
+\item{d_f_s}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the scale parameter of the distribution specified according to \code{dist_fam}}
 
-\item{d_f_n}{-}
+\item{d_f_n}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the shape parameter, specifically the \eqn{\nu} parameter, of the distribution specified according to \code{dist_fam}}
 
-\item{d_f_t}{-}
+\item{d_f_t}{- Numeric value that specifies the degrees of freedom for the cubic spline specified for the shape parameter, specifically the \eqn{\tau} parameter, of the distribution specified according to \code{dist_fam}}
 
 \item{\dots}{Passed down to \code{gamlss}}
 }
 \value{
-There are many possible return values
+Returns a gamlss object as described in \code{\link{gamlss}}
 }
 \description{
 The function fits an initial GAMLSS distribution to the full data
 in order to be used as a reference distribution for the following
-patient like me GAMLSS fits
+matched individuals' GAMLSS fits
 }

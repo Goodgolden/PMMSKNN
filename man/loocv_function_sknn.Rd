@@ -4,14 +4,40 @@
 \alias{loocv_function_sknn}
 \title{Calculate bias, coverage and CI width for neighbors-based prediction}
 \usage{
-loocv_function_sknn(nearest_n = seq(20, 150, by = 10), dist_fam = NULL,
-  fulldata, train_test = "train_test", patid = "patient_id", formula,
-  train_post, test_post, outcome, time_elapsed, plot = FALSE,
-  matchprobweight = FALSE, time_window = NULL, interval = NULL,
-  cs = FALSE, dfspec = NULL, d_f_m = 1.8, ptr_m = 1, d_f_s = 1.2,
-  d_f_n = 1, d_f_t = 1, thresh_val = 10000, printtrace = FALSE,
-  userchoose = NULL, parallel = NULL, loocv = TRUE, biasm = "raw",
-  ...)
+loocv_function_sknn(
+  nearest_n = seq(20, 150, by = 10),
+  dist_fam = NULL,
+  fulldata,
+  train_test = "train_test",
+  patid = "patient_id",
+  formula,
+  train_post,
+  test_post,
+  outcome,
+  time_elapsed = "time",
+  plot = FALSE,
+  matchprobweight = FALSE,
+  time_window = NULL,
+  interval = NULL,
+  cs = FALSE,
+  dfspec = NULL,
+  d_f_m = 1.8,
+  ptr_m = 1,
+  d_f_s = 1.2,
+  d_f_n = 1,
+  d_f_t = 1,
+  thresh_val = 10000,
+  printtrace = FALSE,
+  userchoose = NULL,
+  parallel = NULL,
+  loocv = TRUE,
+  seed = 1234,
+  biasm = "raw",
+  perfrank = "cov",
+  opt_cov = 0.5,
+  perf_round_by = 4,
+  ...
+)
 }
 \arguments{
 \item{nearest_n}{Numeric vector with number of matches per scenario}
@@ -75,8 +101,16 @@ interacts with the next set of arguments)}
 \item{loocv}{- Whether or not to perform leave one out cross validation or just go straight to prediction. Should
 have the userchoose value specified if `loocv=FALSE`}
 
+\item{seed}{- Seed for probability sampling of the nearest matches}
+
 \item{biasm}{- Column indicating which bias score to use for choosing optimal n. Default
 is \code{'raw'}. Options: \code{'raw','rmse','zsc'}.}
+
+\item{perfrank}{- String indicating how to rank the performance of the LOOCV. Default is `perfrank == "cov"`, which prioritizes LOOCV based on prefering coverage values that are close to 0.5. Then the lowest `rmse` value then `prec` value is prefered,}
+
+\item{opt_cov}{- Float value indicating optimal coverage value used for `perfrank`. Defaults to 0.5}
+
+\item{perf_round_by}{- Integer value to indicate what decimal point will the performance values should be rounded by. Default is `perf_round_by = 4`, set to smaller value to be less coarse about ranking `nearest_n` values.}
 
 \item{\dots}{Passed down to \code{gamlss}}
 }

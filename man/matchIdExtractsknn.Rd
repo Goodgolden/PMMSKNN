@@ -2,7 +2,7 @@
 % Please edit documentation in R/matchIdExtractsknn.R
 \name{matchIdExtractsknn}
 \alias{matchIdExtractsknn}
-\title{Match ID Function: create array of ID values closest matching to training or testing case}
+\title{Match ID Function for Sequential K Nearest Neighbor Algorithm: Create an array of ID values closest matching to training or testing case}
 \usage{
 matchIdExtractsknn(data, train_test = "train__test", patid, formula)
 }
@@ -12,14 +12,14 @@ matchIdExtractsknn(data, train_test = "train__test", patid, formula)
 \item{train_test}{Column name indicating whether individual belongs to
 Training or Testing dataset. Train = 1, Test = 2 by default.}
 
-\item{patid}{Column name indicating patient id.}
+\item{patid}{Column name indicating patient id. (type = "string")}
 
 \item{formula}{Formula indicating the variables used for matching.
 (e.g. \code{ ~ var1 + var2 + var3 }).}
 }
 \value{
-An k x klist$test (or k x klist$train) array of patient id numbers
+An k x k list$test (or k x k list$train) array of patient id numbers
 }
 \description{
-Match ID Function: create array of ID values closest matching to training or testing case
+Match ID Function for Sequential K Nearest Neighbor Algorithm: Create an array of ID values closest matching to training or testing case
 }

@@ -3,10 +3,9 @@
 \docType{package}
 \name{PMMSKNN-pkg}
 \alias{PMMSKNN-pkg}
-\alias{PMMSKNN-pkg-package}
-\title{\pkg{PMMSKNN}: Curve Matching Validation Tools for Knee Surgery Outcomes.}
+\title{\pkg{PMMSKNN}: Sequential KNN Extended via Predicted Mean Matching.}
 \description{
-INSERT HERE DESCRIPTION OF THE PACKAGE
+This package provides functions that allow personalized predictions of longitudinal outcome trajectory based on extending the sequential KNN algorithm via Predicted Mean Matching. Essentially individuals are matched according to a distal outcome of interest based on characteristics that explains the variation in the outcome. The trajectory of the matched population is used to generate predictions for each individuals.
 }
 \note{
 Development of this package was kindly supported by 
