@@ -1,43 +1,43 @@
-#'@importFrom brokenstick brokenstick get_knots
-#'@importFrom reshape2    melt
-#'@importFrom broom       tidy
-#'@importFrom gamlss      gamlss centiles.pred cs pb gamlss.control
-#'@importFrom gamlss.dist BCCGo BCPEo BCTo GA NO
-#'@importFrom dplyr       bind_rows filter filter_ mutate %>% group_by
+#' @importFrom brokenstick brokenstick get_knots
+#' @importFrom reshape2    melt
+#' @importFrom broom       tidy
+#' @importFrom gamlss      gamlss centiles.pred cs pb gamlss.control
+#' @importFrom gamlss.dist BCCGo BCPEo BCTo GA NO
+#' @importFrom dplyr       bind_rows filter filter_ mutate %>% group_by
 #'                        n select select_ left_join distinct distinct_
-#'                        summarise summarise_ arrange arrange_ 
-#'                        rename rename_ bind_cols full_join ntile do 
+#'                        summarise summarise_ arrange arrange_
+#'                        rename rename_ bind_cols full_join ntile do
 #'                        if_else row_number group_by_ slice ungroup
 #'                        tibble mutate_ top_n pull
-#'@importFrom data.table  data.table rbindlist 
-#'@importFrom cowplot     plot_grid get_legend
-#'@importFrom DescTools   MedianCI
-#'@importFrom lme4        lmer
-#'@importFrom merTools    predictInterval
-#'@importFrom tidyr       spread nest
-#'@importFrom tidyselect  contains matches
-#'@importFrom rlang       .data := parse_quo caller_env global_env
-#'@importFrom ggplot2     aes aes_string facet_wrap geom_abline 
+#' @importFrom data.table  data.table rbindlist
+#' @importFrom cowplot     plot_grid get_legend
+#' @importFrom DescTools   MedianCI
+#' @importFrom lme4        lmer
+#' @importFrom merTools    predictInterval
+#' @importFrom tidyr       spread nest
+#' @importFrom tidyselect  contains matches
+#' @importFrom rlang       .data := parse_quo caller_env global_env
+#' @importFrom ggplot2     aes aes_string facet_wrap geom_abline
 #'                        geom_boxplot geom_hline geom_line geom_point
 #'                        geom_pointrange geom_text ggplot geom_smooth
 #'                        scale_colour_manual theme theme_bw
 #'                        xlab xlim ylab ylim annotate guide_legend
 #'                        labs
-#'@importFrom MASS        stepAIC mvrnorm
-#'@importFrom doParallel  registerDoParallel stopImplicitCluster
-#'@importFrom doSNOW      registerDoSNOW 
-#'@importFrom parallel    makeCluster detectCores 
-#'@importFrom future      plan multiprocess  sequential
-#'@importFrom future.apply      future_lapply
-#'@importFrom foreach     foreach %dopar%
-#'@importFrom stats       as.formula complete.cases cor formula
-#'                        glm lm median  na.omit pnorm poisson 
+#' @importFrom MASS        stepAIC mvrnorm
+#' @importFrom doParallel  registerDoParallel stopImplicitCluster
+#' @importFrom doSNOW      registerDoSNOW
+#' @importFrom parallel    makeCluster detectCores
+#' @importFrom future      plan multiprocess  sequential
+#' @importFrom future.apply      future_lapply
+#' @importFrom foreach     foreach %dopar%
+#' @importFrom stats       as.formula complete.cases cor formula
+#'                        glm lm median  na.omit pnorm poisson
 #'                        predict setNames update median rchisq
 #'                        model.matrix coef quantile fitted qt sd
-#'@importFrom utils       head str globalVariables
+#' @importFrom utils       head str globalVariables
 NULL
 
-utils::globalVariables(c(".","fitmed", "fitpois","test_id","train_id","..","bs_obj"))
+utils::globalVariables(c(".", "fitmed", "fitpois", "test_id", "train_id", "..", "bs_obj"))
 
 #' \pkg{PMMSKNN}: Sequential KNN Extended via Predicted Mean Matching.
 #'
@@ -53,10 +53,10 @@ utils::globalVariables(c(".","fitmed", "fitpois","test_id","train_id","..","bs_o
 #' @name PMMSKNN-pkg
 #' @seealso \code{\link{brokenstick}}
 #' @note
-#' Development of this package was kindly supported by 
+#' Development of this package was kindly supported by
 #' FUNDER under THIS GRANT NUMBER
 #' @references
-#' Kittelson et al. (2019). \emph{Development and testing of a 
-#' neighbors-based prediction for physical function after total 
+#' Kittelson et al. (2019). \emph{Development and testing of a
+#' neighbors-based prediction for physical function after total
 #' knee arthroplasty}. In preparation.
 NULL
