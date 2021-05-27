@@ -12,32 +12,36 @@ Description: This package provides tools for validating curve matching
     methodology applied to predict trajectories of Knee Surgery Outcomes 
     for patients.
 Depends: R (>= 3.5.0)
-Imports: reshape2,
-         broom,
-         brokenstick, 
-         dplyr,
-         tidyr,
-         tidyselect,
-         gamlss,
-         gamlss.dist,
-         rlang,
-         ggplot2,
-         MASS,
-         cowplot, 
-         DescTools,
-         lme4,
-         merTools,
-         data.table,
-         doParallel,
-         doSNOW,
-         parallel,
-         future,
-         future.apply,
-         stats,
-         foreach
+Imports: 
+    brokenstick,
+    broom.mixed,
+    broom,
+    cowplot,
+    data.table,
+    DescTools,
+    doParallel,
+    doSNOW,
+    dplyr,
+    foreach,
+    future,
+    future.apply,
+    gamlss,
+    gamlss.dist,
+    ggplot2,
+    lme4,
+    MASS,
+    merTools,
+    parallel,
+    reshape2,
+    rlang,
+    stats,
+    tidyr,
+    tidyselect
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Suggests: 
-    testthat
+    testthat (>= 3.0.0),
+    usethis
+Config/testthat/edition: 3

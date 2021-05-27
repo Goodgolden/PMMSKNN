@@ -14,13 +14,13 @@ loocv_perf(
 )
 }
 \arguments{
-\item{loocv_res}{- The \code{loocv_res} components of an object 
+\item{loocv_res}{- The \code{loocv_res} components of an object
 produced by \code{\link{loocv_function}}}
 
 \item{outcome}{- Name of the outcomes variable (type=string)}
 
-\item{nearest_n}{- Numeric vector indicating the nearest number of matches 
-to select from. The \code{loocv_function} will iterate through 
+\item{nearest_n}{- Numeric vector indicating the nearest number of matches
+to select from. The \code{loocv_function} will iterate through
 the number within the vector and select the number of matches that has
 optimal bias, coverage, and precision.
 The number of nearest_n should be within the range of number of individuals

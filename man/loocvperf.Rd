@@ -7,18 +7,18 @@
 loocvperf(loocv_res, train_o, bias = "raw", nearest_n = nearest_n)
 }
 \arguments{
-\item{loocv_res}{- The \code{loocv_res} components of an object 
+\item{loocv_res}{- The \code{loocv_res} components of an object
 produced by \code{\link{loocv_function}}}
 
 \item{train_o}{- Data frame. Specifically, training data with patient_id ordered based on fitted distal outcome value using predicted mean matching.
-Generated using \code{\link{preproc}}. Example, \code{x <- preproc()}, 
+Generated using \code{\link{preproc}}. Example, \code{x <- preproc()},
 then \code{x$train_o} would be used for this parameter.}
 
 \item{bias}{- Column indicating which bias score to use. Default
 is \code{'raw'}. Options: \code{'raw','rmse','zsc'}.}
 
-\item{nearest_n}{- Numeric vector indicating the nearest number of matches 
-to select from. The \code{loocv_function} will iterate through 
+\item{nearest_n}{- Numeric vector indicating the nearest number of matches
+to select from. The \code{loocv_function} will iterate through
 the number within the vector and select the number of matches that has
 optimal bias, coverage, and precision.
 The number of nearest_n should be within the range of number of individuals

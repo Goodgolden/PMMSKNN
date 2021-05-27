@@ -15,8 +15,8 @@ extractIdbyPerf(test_proc, perc)
 A numeric value representing patient id number
 }
 \description{
-`extractIdbyPerf` is a utility function that returns one single id number based on the 
+`extractIdbyPerf` is a utility function that returns one single id number based on the
 `perc` (numeric) argument provided. This is useful to determine the n-th percentile person
-in terms of the overall performance values 
+in terms of the overall performance values
 (could be a combination of bias, coverage, and precision) obtained from the LOOCV process.
 }

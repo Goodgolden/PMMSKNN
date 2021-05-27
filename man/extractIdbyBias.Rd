@@ -15,7 +15,7 @@ extractIdbyBias(loocvObj, perc)
 A numeric value representing patient id number
 }
 \description{
-`extractIdbyBias` is a utility function that returns one single id number based on the 
+`extractIdbyBias` is a utility function that returns one single id number based on the
 `perc` (numeric) argument provided. This is useful to determine the n-th percentile person
 in terms of the bias values obtained from the LOOCV process.
 }

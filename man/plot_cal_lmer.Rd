@@ -20,7 +20,7 @@ included.}
 \item{perfObj}{An object from \code{\link{perfCalcLMM}}}
 
 \item{fitopt}{Number indicating which LMM prediction method to use (mostly for CI).
-1 = predictInterval() a; 2 = predictInterval() b; 3 = predictInterval() c; 
+1 = predictInterval() a; 2 = predictInterval() b; 3 = predictInterval() c;
 4 = bootMer() parametric; 5 = bootMer() semiparametric}
 
 \item{\dots}{Used for specifying options in the predict() method}
@@ -31,7 +31,7 @@ An object of class \code{ggplot} that outputs a calibration plot of observed vs.
 \description{
 Creates Calibration Plots:
 \enumerate{
-  \item \emph{Calibration plots} showing the distribution of the 
+  \item \emph{Calibration plots} showing the distribution of the
   observed outcomes at several predicted values. Separate plots
   are made for the training and test data.}
 }

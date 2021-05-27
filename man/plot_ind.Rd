@@ -29,7 +29,7 @@ plot_ind(
 \item{idnum}{Integer indicating the id of the individual}
 
 \item{mtype}{Integer value indicating matching type. Default is set to 1 which follows the
-matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are 
+matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are
 from \code{0} to \code{4}}
 
 \item{n}{Integer representing number of matches.}
@@ -58,8 +58,8 @@ A list that contains 1) an object of class \code{ggplot} that outputs a gamlss p
 \description{
 Creates a single plot with the below specification:
 \enumerate{
-  \item \emph{Individuals data points} showing individual patient values 
-  \item \emph{Matched indivduals' data points} showing the 
+  \item \emph{Individuals data points} showing individual patient values
+  \item \emph{Matched indivduals' data points} showing the
   data points from the nearest neighbors of the selected individual
   }
 }

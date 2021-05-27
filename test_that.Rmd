@@ -12,37 +12,88 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(testthat)
+library(usethis)
 library(devtools)
 # library(PMMSKNN)
 ```
+## fix baselinemk.R for basline over 0.
+
 
 ```{r error = recover}
 # devtools::install_github('ck2136/PMMSKNN')
 devtools::load_all()
-# test_check("PMMSKNN")
 
 debug(PMMSKNN:::preproc)
+# usethis::use_testthat()
 
+## 1. Create a tests/testthat directory
+## 2. Adds testthat to the Suggests field in the DESCRIPTION
+## 3. Creates a file tests/testthat.R 
+##    that runs all your tests when R CMD check runs.
 
+## 1. Modify your code or tests.
+## 2. Test your package with Ctrl/Cmd + Shift + T 
+##    or devtools::test().
+## 3. Repeat until all tests pass.
+devtools::test()
 use_r("preproc.R")
+use_r("loocv_function_bs")
 use_test("preproc.R")
-use_test("baselinemk")
+use_test("baselinemk.R")
+use_test("plot_cal.R")
+use_test("listtodf.R")
 
+devtools::test_file("preproc.R")
 
-View(full)
-rep = "time"
-rrep = "Diet"
-
-filter_string <- paste0(rep, "==0")
-full %>%
-  select(matches(c(rep, rrep)))
-  
-  
-  
-  
-  
-  filter(!! rlang::parse_expr(filter_string))
+# rep = "time"
+# rrep = "Diet"
+## filter(!! rlang::parse_expr(filter_string))
 rlang::last_error()
 rlang::last_trace()
 ```
+
+```{r}
+package?devtools
+```
+
+
+```{r}
+?getOption
+## Allow the user to set and examine a variety of global options 
+## which affect the way in which R computes and displays its results.
+getOption()
+
+
+## Set or Get a Vignette Processing Engine
+?tools::vignetteEngine()
+```
+
+
+
+```{r}
+requireNamespace("tidyverse", quietly = TRUE)
+usethis::use_package("broom.mixed")
+```
+
+
+```{r}
+usethis::use_l
+
+sessionInfo()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

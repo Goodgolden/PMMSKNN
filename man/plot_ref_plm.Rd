@@ -51,10 +51,10 @@ An object of class \code{ggplot} that outputs a gamlss predition curve for the p
 \description{
 Creates two plots.
 \enumerate{
-  \item \emph{Reference plot} showing reference population values 
-  along with fitted gamlss centile curves 
-  \item \emph{Patient like me plot} showing the distribution of the 
+  \item \emph{Reference plot} showing reference population values
+  along with fitted gamlss centile curves
+  \item \emph{Patient like me plot} showing the distribution of the
   outcome of matched patients along with the selected patients' predicted
-  centile curve. 
+  centile curve.
   }
 }

@@ -54,7 +54,7 @@ Training or Testing dataset. Train = 1, Test = 2 by default.}
 \item{formula}{Formula indicating the variables used for matching.
 (e.g. \code{ ~ var1 + var2 + var3 }).}
 
-\item{train_post}{- datasets, typically the \code{train_post} list component 
+\item{train_post}{- datasets, typically the \code{train_post} list component
 of the object produced by \code{\link{preproc}}.}
 
 \item{test_post}{Idem, component \code{test_post}}
@@ -66,18 +66,18 @@ of the object produced by \code{\link{preproc}}.}
 \item{plot}{- Logical that specifies whether to output individual precision plots}
 
 \item{matchprobweight}{- Logical that specifies whether to utilize probability sampling
-when doing the mean matching. If TRUE, matches nearest n weighted on differnce in 
+when doing the mean matching. If TRUE, matches nearest n weighted on differnce in
 predicted outcome.}
 
 \item{time_window}{- vector of numbers for `centiles.pred()`, `xvalues` argument}
 
 \item{interval}{- Int value specifying the interval of individuals to skip}
 
-\item{cs}{Logical that specifies whether to use cubic spline. 
+\item{cs}{Logical that specifies whether to use cubic spline.
 The default \code{cs = FALSE} uses ...}
 
 \item{dfspec}{Logical that specifies whether to the user sets
-degrees of freedom (...not clear to me what it does, and how it 
+degrees of freedom (...not clear to me what it does, and how it
 interacts with the next set of arguments)}
 
 \item{d_f_m}{... explain: arguments probably mean different things for different distributions. Might be preferable to package it with \code{dist_fam}}
@@ -118,8 +118,8 @@ is \code{'raw'}. Options: \code{'raw','rmse','zsc'}.}
 There are many possible return values
 }
 \description{
-The function calculate three frequency-based parameters to 
+The function calculate three frequency-based parameters to
 demonstate statistical quality of the neighbors-based prediction.
-The parameters are bias, coverage and the 50% prediction interval 
+The parameters are bias, coverage and the 50% prediction interval
 width.
 }

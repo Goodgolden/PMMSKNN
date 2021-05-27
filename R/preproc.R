@@ -90,6 +90,11 @@ preproc <-
            m = 5,
            ...) {
 
+    # outcome = "Diet"
+    # time_var = "Time"
+    # pat_id = "Chick"
+    # baseline_var = "baseline"
+    
     ## check baseline ---------------------------------------------
     if (is.null(dff[, baseline_var])) {
       stop("baseline_var is NULL.
@@ -109,8 +114,7 @@ preproc <-
         time_var,
         " is not an integer!
                        converting to integer!
-                       Check if this makes sense!"
-      ))
+                       Check if this makes sense!"))
       dff[, time_var] <- as.integer(dff[[time_var]])
     }
 
@@ -122,11 +126,9 @@ preproc <-
     if (!is.null(varlist)) {
       dff <- dff %>%
         ##    (1)id   (2)outcome (3)time,
-        .[, c(
-          pat_id, outcome, time_var,
-          ##    (4)train/test (5)baseline   (6)listed
-          split_var, baseline_var, varlist
-        )]
+        .[, c(pat_id, outcome, time_var,
+        ##  (4)train/test (5)baseline   (6)listed
+              split_var,  baseline_var, varlist)]
     } else {
       stop("varlist not populated:
              specify varlist = c('var1','var2',...)")
@@ -134,53 +136,54 @@ preproc <-
 
 
     ## check completeness ---------------------------------------------
-    if (any(!dff[, c(
-      pat_id,
-      outcome,
-      time_var,
-      split_var,
-      baseline_var,
-      varlist
-    )] %>%
-      complete.cases())) {
-      stop("missin data in the data!")
+    if (any(!dff[, c(pat_id, outcome, time_var, split_var,
+                     baseline_var, varlist)] %>%
+            complete.cases())) {
+      stop("missing data in the data frame!")
     }
 
+
     ## check duplication -----------------------------------------------
-    if (any(dff %>%
+    condition_dup <- dff %>%
       filter(.$baseline == 1) %>%
-      dplyr::select_(pat_id) %>%
+      mutate(c = 1) %>%
+      dplyr::select(!! rlang::parse_expr(pat_id), c) %>%
       unlist() %>%
-      duplicated())) {
+      duplicated()
+    if (any(condition_dup)) {
       warning("Duplicate baseline values exist within
               training and testing set!
               remove them before running preproc")
     }
 
     ## check training ----------------------------------------------
-    if (any(dff %>%
+    condition_train <- dff %>%
       ## check duplication in training data
-      filter(.$train_test == 1 &
-        .$baseline == 1) %>%
-      dplyr::select(pat_id) %>%
+      filter(.$train_test == 1 & .$baseline == 1) %>%
+      mutate(c = 1) %>%
+      dplyr::select(!! rlang::parse_expr(pat_id), c) %>%
       unlist() %>%
-      duplicated())) {
+      duplicated()
+    
+    if (any(condition_train)) {
       warning("Duplicate baseline values exist
                     within the training set!
                     remove them before running preproc")
     }
-
+    
 
     # Mon Apr 05 11:44:46 2021 ------------------------------
-    ## check testing and training seperated
+    ## check testing and training separated
     ## check testing ---------------------------------------------
-    if (any(dff %>%
+    condition_test <- dff %>%
       ## check duplication in testing data
       filter(.$train_test == 2 &
-        .$baseline == 1) %>%
-      dplyr::select(pat_id) %>%
+               .$baseline == 1) %>%
+      mutate(c = 1) %>%
+      dplyr::select(pat_id, c) %>%
       unlist() %>%
-      duplicated())) {
+      duplicated()
+    if (any(condition_test)) {
       warning("Duplicate baseline values exist
               within the testing set!
               remove them before running preproc")
@@ -208,16 +211,19 @@ preproc <-
     # Mon Apr 05 11:47:51 2021 ------------------------------
     ## change the select_() into select()
 
+    df3 <- dff %>%
+      filter(.data$baseline == 1) %>%
+      distinct(!! rlang::parse_expr(pat_id), 
+                .keep_all = TRUE) %>%
+      dplyr::select(c(pat_id, outcome)) %>%
+      dplyr::rename("p_outcome" = !! rlang::parse_expr(outcome))
+    
+    
     exclude <- dff %>%
       filter(.data$baseline == 1) %>%
-      dplyr::select(matches(pat_id, outcome)) %>%
-      full_join(dff %>%
-        filter(.data$baseline == 1) %>%
-        distinct_(pat_id, .keep_all = TRUE) %>%
-        dplyr::select(matches(c(pat_id, outcome))) %>%
-        dplyr::rename("p_outcome" = !!outcome),
-      by = c(pat_id)
-      ) %>%
+      dplyr::select(pat_id, outcome) %>%
+      full_join(df3,
+                by = c(pat_id)) %>%
       filter(is.na(.data$p_outcome) | is.na(.[outcome]))
 
     if (nrow(exclude) != 0) {
@@ -225,69 +231,73 @@ preproc <-
       stop("Not all patients have Post-Op values for LOOCV!")
     }
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # Split test/train
-    # - - - - - - - - - - - - - - - - - - - - - - #
+    # Split test/train ---------------------------------
     train_string <- paste0(split_var, "==", trainval)
     test_string <- paste0(split_var, "==", testval)
 
-    df_train <- dff %>% filter(!!train_string)
-    df_test <- dff %>% filter(!!test_string)
+    df_train <- dff %>% 
+      filter(!! rlang::parse_expr(train_string))
+    df_test <- dff %>% 
+      filter(!! rlang::parse_expr(test_string))
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # Split test/train by pre and post using baseline_var
-    # - - - - - - - - - - - - - - - - - - - - - - #
+    # Split test/train ------------------------------------
+    # by pre and post using baseline_var
 
-    pre_train_df <- df_train %>% filter_(paste0(baseline_var, "== 1"))
-    pre_test_df <- df_test %>% filter_(paste0(baseline_var, "== 1"))
+    base_string1 <- paste0(baseline_var,"== 1")
+    pre_train_df <- df_train %>% 
+      filter(!! rlang::parse_expr(base_string1))
+    pre_test_df <- df_test %>% 
+      filter(!! rlang::parse_expr(base_string1))
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # Allow user to specify filter_exp
-    # - - - - - - - - - - - - - - - - - - - - - - #
 
+    # Allow user to specify filter_exp -------------------------------
+
+    base_string0 <- paste0(baseline_var, "== 0")
     if (is.null(filter_exp)) {
-      post_train_df <- df_train %>% filter_(paste0(baseline_var, "== 0"))
-      post_test_df <- df_test %>% filter_(paste0(baseline_var, "== 0"))
+      post_train_df <- df_train %>% 
+        filter(!! rlang::parse_expr(base_string0))
+      post_test_df <- df_test %>% 
+        filter(!! rlang::parse_expr(base_string0))
     } else {
       post_train_df <- df_train %>%
-        filter_(filter_exp) %>%
-        filter_(paste0(baseline_var, "== 0"))
+        filter(!! rlang::parse_expr(filter_exp)) %>%
+        filter(!! rlang::parse_expr(base_string0))
       post_test_df <- df_test %>%
-        filter_(filter_exp) %>%
-        filter_(paste0(baseline_var, "== 0"))
+        filter(!! rlang::parse_expr(filter_exp)) %>%
+        filter(!! rlang::parse_expr(base_string0))
     }
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # use brokenstick to predict values at knots_exp
-    # - - - - - - - - - - - - - - - - - - - - - - #
-
+    # use brokenstick ----------------------------------------
+    # to predict values at knots_exp 
+    # add -----------------------------------------------------
+    post_train_df <- dff
+    formula_bs <- paste0(outcome, " ~ ", time_var, " | ", pat_id)
+    formula_bs
+    # Tue Apr 13 09:33:56 2021 ------------------------------
+    ## not sure what is going on
+    ## reach to singularity
     fit <- brokenstick(
-      y = unlist(post_train_df[, outcome]),
-      x = unlist(post_train_df[, time_var]),
-      subjid = unlist(post_train_df[, pat_id]),
-      knots = knots_exp
-    )
-
-    est1 <- predict(fit, at = "knots")
-    alldf <- left_join(
-      est1[round(est1$x, 3) == round(out_time, 3), ] %>%
-        setNames(c(pat_id, "x", "y", "yhat", "knot")) %>%
-        dplyr::select_(pat_id, "yhat") %>%
-        # need to change pat_id bc it is a factor when outputted through predict()
-        mutate(!!pat_id := !!parse_quo(paste0("as.numeric(as.character(", pat_id, "))"), env = rlang::caller_env()))
+      formula = as.formula(formula_bs),
+      data = post_train_df,
+      # Mon Apr 12 14:21:18 2021 ------------------------------
+      knots = knots_exp)
+    View(fit)
+    est1 <- predict(fit)
+    df1 <- est1[round(est1$x, 3) == round(out_time, 3), ] %>%
+      setNames(c(pat_id, "x", "y", "yhat", "knot")) %>%
+      dplyr::select(!! rlang::parse_expr(pat_id),"yhat") %>%
+      # need to change pat_id bc it is a factor when outputted through predict()
       # mutate(!!pat_id := !!parse_quosure(paste0("as.numeric(as.character(",pat_id,"))")))
-      ,
-      pre_train_df %>%
-        .[, c(pat_id, time_var, split_var, baseline_var, varlist)],
-      by = pat_id
-    ) %>%
-      # - - - - - - - - - - - - - - - - - - - - - - #
+      mutate(!!pat_id := !!parse_quo(paste0("as.numeric(as.character(", pat_id, "))"), 
+                                     env = rlang::caller_env()))
+    df2 <- pre_train_df[, c(pat_id, time_var, split_var, baseline_var, varlist)]
+    
+    alldf <- left_join(df1, df2, by = pat_id) %>%
       # only keep complete cases
-      # - - - - - - - - - - - - - - - - - - - - - - #
       .[complete.cases(.), ]
-    # - - - - - - - - - - - - - - - - - - - - - - #
+    
+    # model selection -------------------------------------------------
     # lm() using gamlss package to get predicted outcome at out_time
-    # - - - - - - - - - - - - - - - - - - - - - - #
     # pmm <- gamlss(yhat ~ get(outcome) + age + gender + bmi,family=NO, data=alldf)
     # pmm <- lm(yhat ~ get(outcome) + age + gender + bmi, data=alldf)
     if (is.null(pmmform)) {
@@ -296,23 +306,19 @@ preproc <-
       pmm <- lm(formula = pmmform, data = alldf)
     }
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # If modelselect = TRUE, use stepAIC to choose variables
-    # - - - - - - - - - - - - - - - - - - - - - - #
+    # modelselect = TRUE -----------------------------------------------
+    # use stepAIC to choose variables
     if (modelselect) {
       pmm <- stepAIC(pmm)
     }
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # Create dataset with fitted outcome at out_time for training patients
-    # - - - - - - - - - - - - - - - - - - - - - - #
+    # Create dataset with fitted outcome ---------------------------------------
+    # at out_time for training patients
+    rename_string <- paste0("id = ", pat_id, "Fitted = `pmm$fitted.values`")
     train_ordered <- alldf %>%
-      dplyr::select_(pat_id) %>%
+      dplyr::select() %>%
       cbind(pmm$fitted.values) %>%
-      rename_(
-        "id" = pat_id,
-        "Fitted" = "`pmm$fitted.values`"
-      ) %>%
+      rename(!! rlang::parse_expr(rename_string)) %>%
       # Fitted=`pmm$mu.fv`) %>%
       arrange(.data$Fitted)
 
@@ -323,23 +329,19 @@ preproc <-
           m,
           pat_id = pat_id,
           seed = 1234,
-          dftest = NULL
-        )
-      )
+          dftest = NULL))
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # Create dataset with fitted outcome at out_time for testing patients
+    # Create dataset with fitted outcome at out_time for testing patients ----------------------
     # Here we still use the linear model used to fit the training data (i.e. pmm)
-    # - - - - - - - - - - - - - - - - - - - - - - #
 
+    rename_string2 <- paste0("id = ", pat_id)
     test_ordered <- pre_test_df %>%
-      dplyr::select_(pat_id) %>%
+      dplyr::select(pat_id) %>%
       bind_cols(pred = predict(pmm,
         data = alldf,
         newdata = pre_test_df %>%
-          .[, c(outcome, varlist)]
-      )) %>%
-      rename_("id" = pat_id) %>%
+          .[, c(outcome, varlist)])) %>%
+      rename(!! rlang::parse_expr(rename_string2)) %>%
       arrange(.data$pred)
 
     test_ordered <- test_ordered %>%
@@ -353,20 +355,14 @@ preproc <-
         )
       )
 
-    # - - - - - - - - - - - - - - - - - - - - - - #
-    # Change patient_id column for LOOCV function use
-    # - - - - - - - - - - - - - - - - - - - - - - #
+
+    # Change patient_id column for LOOCV function use -------------------------------
+    rename_string3 <- paste0("patient_id =", pat_id, ", time = ", time_var)
     post_train_df <- post_train_df %>%
-      rename_(
-        "patient_id" = pat_id,
-        "time" = time_var
-      )
+      rename_(!! rlang::parse_expr(rename_string3))
 
     post_test_df <- post_test_df %>%
-      rename_(
-        "patient_id" = pat_id,
-        "time" = time_var
-      )
+      rename_(!! rlang::parse_expr(rename_string3))
 
     return(list(
       train_post = post_train_df,

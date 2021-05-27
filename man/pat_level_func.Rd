@@ -40,8 +40,8 @@ pat_level_func(
 \arguments{
 \item{ref}{- Fitted gamlss object from \code{\link{fitrefgamlss}}}
 
-\item{nearest}{- Numeric vector indicating the nearest number of matches 
-to select from. The \code{loocv_function} will iterate through 
+\item{nearest}{- Numeric vector indicating the nearest number of matches
+to select from. The \code{loocv_function} will iterate through
 the number within the vector and select the number of matches that has
 optimal bias, coverage, and precision.
 The number of nearest_n should be within the range of number of individuals
@@ -53,13 +53,13 @@ one could do \code{nearest_n <- 10:100}}
 \item{train_post}{- Data frame that contains the post-baseline observations from the training dataset. Typically this would be the \code{train_post} list component that was generated from the \code{\link{preproc}} function}
 
 \item{ord_data}{Data frame. Specifically, training data with patient_id ordered based on fitted distal outcome value using predicted mean matching.
-Generated using \code{\link{preproc}}. Example, \code{x <- preproc()}, 
+Generated using \code{\link{preproc}}. Example, \code{x <- preproc()},
 then \code{x$train_o} would be used for this parameter.}
 
 \item{test_post}{Data frame that contains the post-baseline observations from the testing dataset. Typically this would be the \code{train_post} list component that was generated from the \code{\link{preproc}} function}
 
 \item{test_o}{Data frame. Specifically, testing data with patient_id ordered based on fitted distal outcome value using predicted mean matching.
-Generated using \code{\link{preproc}}. Example, \code{x <- preproc()}, 
+Generated using \code{\link{preproc}}. Example, \code{x <- preproc()},
 then \code{x$test_o} would be used for this parameter.}
 
 \item{traintestmatchdf}{- Matched train test dataframe based on \code{\link{matchTestDataGen}}}
@@ -71,17 +71,17 @@ then \code{x$test_o} would be used for this parameter.}
 \item{plot}{- Logical (\code{TRUE/FALSE}) that specifies whether to output individual precision plots}
 
 \item{matchprobweight}{- Logical (\code{TRUE/FALSE}) that specifies whether to utilize probability sampling
-when doing the mean matching. If TRUE, matches nearest n weighted on differnce in 
+when doing the mean matching. If TRUE, matches nearest n weighted on differnce in
 predicted outcome.}
 
 \item{time_window}{- vector of numbers for `centiles.pred()`, `xvalues` argument. For example, specify such as \code{c(10:30)}}
 
 \item{interval}{- Int value specifying the interval of individuals to skip}
 
-\item{cs}{- Logical that specifies whether to use cubic spline. 
+\item{cs}{- Logical that specifies whether to use cubic spline.
 The default is set to \code{cs = FALSE}.}
 
-\item{dfspec}{- Logical (\code{TRUE/FALSE}) that specifies whether to 
+\item{dfspec}{- Logical (\code{TRUE/FALSE}) that specifies whether to
 specify degrees of freedoms for the location, scale, and shape parameters
 for the distribution specified with \code{dist_fam}.
 Default value is \code{NULL}.}
@@ -106,17 +106,17 @@ Default value is \code{NULL}.}
 
 \item{parallel}{- Number of cores used for the leave-one-out cross validation process. Default = 1}
 
-\item{loocv}{- Logical (\code{TRUE/FALSE}) that specifies whether 
-or not to perform leave-one-out cross validation or just output 
+\item{loocv}{- Logical (\code{TRUE/FALSE}) that specifies whether
+or not to perform leave-one-out cross validation or just output
 predictions without hyperparameter tuning. If \code{loocv=FALSE}, then
 users need to specify the value of the nearest_n}
 
 \item{mtype}{- Integer value indicating matching type. Default is set to 1 which follows the
-matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are 
+matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are
 from \code{0} to \code{4}}
 
-\item{biasm}{- Column indicating which bias measure to use for 
-choosing the optimal nearest number of neighbors. 
+\item{biasm}{- Column indicating which bias measure to use for
+choosing the optimal nearest number of neighbors.
 Default is \code{'raw'}. Options: \code{'raw','rmse','zsc'}.}
 
 \item{m}{- For \code{mtype = 4}, which is type 4 matching from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}, the Number of repititions for obtaining \eqn{\dot{y}} in terms of the predictive mean matching process.}
@@ -125,7 +125,7 @@ Default is \code{'raw'}. Options: \code{'raw','rmse','zsc'}.}
 Returns a list of 3 lists and a value. 1) \code{pred_res} contains a list of predicted values for the training data (\code{pred_train}) and test data (\code{pred_test}), the performance (\code{bias},\code{rmse},\code{zscore},\code{iqrcoverage},\code{precisionvec}, and number of dropped cases in fitting the gamlss model(\code{dropped_cases})); 2) \code{loocv_res} contains the same lists described above for each models fitted using different values of number of nearest neighbors; 3) \code{loocv_score} contains the summarised performance measures as a data frame; 4) \code{nearest_n} contains the optimal number of matches based on the aggregate performance metric.
 }
 \description{
-The function calculate three frequency-based parameters to 
-demonstate statistical quality of the neighbors-based prediction.  #' The parameters are bias, coverage and the 50% prediction interval 
+The function calculate three frequency-based parameters to
+demonstate statistical quality of the neighbors-based prediction.  #' The parameters are bias, coverage and the 50% prediction interval
 width.
 }

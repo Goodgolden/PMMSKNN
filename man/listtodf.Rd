@@ -7,16 +7,16 @@
 listtodf(listfile)
 }
 \arguments{
-\item{listfile}{- The leave-one-out-cross-validation result list 
-component created using the \code{loocv_function}. 
-If \code{x <- loocv_function()}, then \code{x$loocv_res} would be 
+\item{listfile}{- The leave-one-out-cross-validation result list
+component created using the \code{loocv_function}.
+If \code{x <- loocv_function()}, then \code{x$loocv_res} would be
 the \code{listfile} to be inputted into the function.}
 }
 \value{
 A data frame that contains performance values (bias, coverage probabilities, zscore, rmse, and dropped cases) by the number of matches (per row)
 }
 \description{
-Utility function to convert results from the LOOCV for all 
+Utility function to convert results from the LOOCV for all
 nearest neighbors from a list of bias, precision, and coverage
 values into an aggregated summarised data frame for generating
 tables and pltos

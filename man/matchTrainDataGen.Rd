@@ -22,11 +22,11 @@ matchTrainDataGen(
 \item{train_post}{- Data frame that contains the post-baseline observations from the training dataset. Typically this would be the \code{train_post} list component that was generated from the \code{\link{preproc}} function}
 
 \item{ord_data}{Data frame. Specifically, training data with patient_id ordered based on fitted distal outcome value using predicted mean matching.
-Generated using \code{\link{preproc}}. Example, \code{x <- preproc()}, 
+Generated using \code{\link{preproc}}. Example, \code{x <- preproc()},
 then \code{x$train_o} would be used for this parameter.}
 
 \item{mtype}{- Integer value indicating matching type. Default is set to 1 which follows the
-matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are 
+matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are
 from \code{0} to \code{4}}
 
 \item{n}{Number of matches}
@@ -41,8 +41,8 @@ from \code{0} to \code{4}}
 
 \item{seed}{Seed for randomly selecting matches based on differences in predicted y}
 
-\item{loocv}{- Logical (\code{TRUE/FALSE}) that specifies whether 
-or not to perform leave-one-out cross validation or just output 
+\item{loocv}{- Logical (\code{TRUE/FALSE}) that specifies whether
+or not to perform leave-one-out cross validation or just output
 predictions without hyperparameter tuning. If \code{loocv=FALSE}, then
 users need to specify the value of the nearest_n}
 

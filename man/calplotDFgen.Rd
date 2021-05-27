@@ -18,6 +18,6 @@ Default is 10.}
 A data frame used to generate calibration plots (using \code{"ggplot"}) for training and testing data.
 }
 \description{
-This is a utility function that takes two vectors of observed and predicted values 
+This is a utility function that takes two vectors of observed and predicted values
 in order to generate a dataframe necessary for producing a calibration plot.
 }

@@ -26,7 +26,7 @@ predZsc(
 
 \item{ord_data}{Idem, component \code{train_o}}
 
-\item{train_post}{- datasets, typically the \code{train_post} list component 
+\item{train_post}{- datasets, typically the \code{train_post} list component
 of the object produced by \code{\link{preproc}}.}
 
 \item{test_post}{Idem, component \code{test_post}}

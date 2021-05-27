@@ -36,8 +36,8 @@ based on \code{\link{fitrefgamlss}} and \code{update()}.}
 
 \item{maxt}{Numeric value indicating maximum time for predicting values}
 
-\item{loocv}{- Logical (\code{TRUE/FALSE}) that specifies whether 
-or not to perform leave-one-out cross validation or just output 
+\item{loocv}{- Logical (\code{TRUE/FALSE}) that specifies whether
+or not to perform leave-one-out cross validation or just output
 predictions without hyperparameter tuning. If \code{loocv=FALSE}, then
 users need to specify the value of the nearest_n}
 
@@ -50,7 +50,7 @@ users need to specify the value of the nearest_n}
 \item{time_elapsed}{Name of the time variable. (type=string)}
 
 \item{ord_data}{Data frame. Specifically, training data with patient_id ordered based on fitted distal outcome value using predicted mean matching.
-Generated using \code{\link{preproc}}. Example, \code{x <- preproc()}, 
+Generated using \code{\link{preproc}}. Example, \code{x <- preproc()},
 then \code{x$train_o} would be used for this parameter.}
 
 \item{train_post}{- Data frame that contains the post-baseline observations from the training dataset. Typically this would be the \code{train_post} list component that was generated from the \code{\link{preproc}} function}

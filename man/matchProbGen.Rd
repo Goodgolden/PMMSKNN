@@ -8,11 +8,11 @@ matchProbGen(ord_data, mtype, n, m, i)
 }
 \arguments{
 \item{ord_data}{Data frame. Specifically, training data with patient_id ordered based on fitted distal outcome value using predicted mean matching.
-Generated using \code{\link{preproc}}. Example, \code{x <- preproc()}, 
+Generated using \code{\link{preproc}}. Example, \code{x <- preproc()},
 then \code{x$train_o} would be used for this parameter.}
 
 \item{mtype}{- Integer value indicating matching type. Default is set to 1 which follows the
-matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are 
+matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are
 from \code{0} to \code{4}}
 
 \item{n}{Number of matches}

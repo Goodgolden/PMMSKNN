@@ -30,7 +30,7 @@ plot_NthP_plm(
 These values indicate the lower and upper n-th percentile/100 person to plot.}
 
 \item{mtype}{- Integer value indicating matching type. Default is set to 1 which follows the
-matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are 
+matching of patients based on recommendation from \href{https://stefvanbuuren.name/fimd/sec-pmm.html}{van Buuren et al.}. \code{mtype} values are
 from \code{0} to \code{4}}
 
 \item{n}{- Integer representing number of matches.}
@@ -59,10 +59,10 @@ An object of class \code{ggplot} that outputs a gamlss predition curve for 2 ind
 \description{
 Creates two plots.
 \enumerate{
-  \item \emph{Lower N_1-th plot} showing individual patient values 
+  \item \emph{Lower N_1-th plot} showing individual patient values
   along with matched individuals and gamlss centile curves for the
   lower N-th vector value specified
-  \item \emph{Upper N_2-th plot} showing individual patient values 
+  \item \emph{Upper N_2-th plot} showing individual patient values
   along with matched individuals and gamlss centile curves for the
   upper N-th vector value specified
   }

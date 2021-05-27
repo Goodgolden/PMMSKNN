@@ -33,17 +33,17 @@ filter the data in terms of performance values. This would be useful
 if the user would want to exclude certain values in presenting the data}
 
 \item{pred_sum}{- String value representing the summary used to depict
-the predictions within the calibration. Usually \code{pred_sum = 'mean'} 
-or \code{pred_sum = 'median'} would be a good choice to depict the 
+the predictions within the calibration. Usually \code{pred_sum = 'mean'}
+or \code{pred_sum = 'median'} would be a good choice to depict the
 summary statistic of predicted values across the deciles of observed values}
 
 \item{obs_dist}{- String value representing the summary used to depict
-the observed value within the calibration plot. 
-Usually \code{pred_sum = 'median'} woud be a good choice to depict the 
+the observed value within the calibration plot.
+Usually \code{pred_sum = 'median'} woud be a good choice to depict the
 deciles of observed values in the calibration plot.}
 
-\item{loocv}{Logical indicating the type of plot: 
-Model performance plot (if \code{loocv = TRUE}, default), 
+\item{loocv}{Logical indicating the type of plot:
+Model performance plot (if \code{loocv = TRUE}, default),
 or or calibration plot (if \code{loocv = FALSE}).}
 
 \item{filter_exp}{- String. For filtering possible values of bias, precision, and coverage values that are out of range. (e.g. \code{"bias < 1.5"})}
@@ -67,11 +67,11 @@ An object of class \code{ggplot} that outputs a calibration plot of observed vs.
 \description{
 Creates two types of plots.
 \enumerate{
-  \item \emph{Model performance plots} showing average bias, 
-  coverage, 50 percent PI width (mean IQR diefference), 
-  and a combined score of these statistics, at various 
+  \item \emph{Model performance plots} showing average bias,
+  coverage, 50 percent PI width (mean IQR diefference),
+  and a combined score of these statistics, at various
   choices for the number of matches.
-  \item \emph{Calibration plots} showing the distribution of the 
+  \item \emph{Calibration plots} showing the distribution of the
   observed outcomes at several predicted values. Separate plots
   are made for the training and test data.}
 }

@@ -9,7 +9,7 @@ perfCalcLMM(fit, n = 1000, train, test, parallel = FALSE, outcome)
 \arguments{
 \item{fit}{An object produced by \code{lmer} function.}
 
-\item{n}{Number of simulations for obtaining prediction 
+\item{n}{Number of simulations for obtaining prediction
 and prediction Interval. Default = 1000.}
 
 \item{train}{A dataframe of training observations with \code{outcome} column

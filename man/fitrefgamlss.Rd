@@ -34,10 +34,10 @@ fitrefgamlss(
 
 \item{time_window}{- vector of numbers for `centiles.pred()`, `xvalues` argument. For example, specify such as \code{c(10:30)}}
 
-\item{cs}{Logical that specifies whether to use cubic spline. 
+\item{cs}{Logical that specifies whether to use cubic spline.
 The default \code{cs = FALSE} uses ...}
 
-\item{dfspec}{- Logical (\code{TRUE/FALSE}) that specifies whether to 
+\item{dfspec}{- Logical (\code{TRUE/FALSE}) that specifies whether to
 specify degrees of freedoms for the location, scale, and shape parameters
 for the distribution specified with \code{dist_fam}.
 Default value is \code{NULL}.}
